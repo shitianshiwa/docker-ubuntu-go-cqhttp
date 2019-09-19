@@ -4,7 +4,7 @@ COPY ./docker-root /
 
 # 先安装增加wine软件源需要的包。安装完wine以后卸载它们。
 RUN apt-get update && apt-get install -y wget software-properties-common apt-transport-https && \
-    wget -O - -nc https://dl.winehq.org/wine-builds/Release.key | apt-key add - && \ | apt-key add - && \
+    wget -O - -nc https://dl.winehq.org/wine-builds/Release.key | apt-key add - && \
     apt-add-repository -y https://dl.winehq.org/wine-builds/ubuntu && \
     dpkg --add-architecture i386 && \
     apt-get update && apt-get install -y \
