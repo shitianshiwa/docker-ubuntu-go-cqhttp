@@ -28,7 +28,8 @@ RUN chsh -s /bin/bash user && \
     su user -c '/usr/local/bin/winetricks -q win7' && \
     su user -c '/usr/local/bin/winetricks -q /tmp/winhttp_2ksp4.verb' && \
     su user -c '/usr/local/bin/winetricks -q msscript' && \
-    su user -c '/usr/local/bin/winetricks -q fontsmooth=rgb' && \    wget https://dlsec.cqp.me/docker-simsun -O /tmp/simsun.zip && \
+    su user -c '/usr/local/bin/winetricks -q fontsmooth=rgb' && \
+    wget https://dlsec.cqp.me/docker-simsun -O /tmp/simsun.zip && \
     mkdir -p /home/user/.wine/drive_c/windows/Fonts && \
     unzip /tmp/simsun.zip -d /home/user/.wine/drive_c/windows/Fonts && \
     chown -R user:user /home/user/.wine && \
