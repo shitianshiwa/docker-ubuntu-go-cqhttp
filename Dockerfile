@@ -24,7 +24,6 @@ RUN chsh -s /bin/bash user && \
     su user -c '/usr/bin/wine regedit.exe /s /tmp/coolq.reg' && \
     su user -c 'wineboot' && \
     echo 'quiet=on' > /etc/wgetrc && \
-    su user -c '/usr/local/bin/winetricks -q dotnet452' && \
     su user -c '/usr/local/bin/winetricks -q win7' && \
     su user -c '/usr/local/bin/winetricks -q /tmp/winhttp_2ksp4.verb' && \
     su user -c '/usr/local/bin/winetricks -q msscript' && \
