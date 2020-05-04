@@ -88,7 +88,7 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 
 ### 生成容器运行
 * cd Dockerfile文件所在路径     //跳转到指定路径
-* docker build -t coolq-dotnet47:v1.0 .      //生成镜像，可能需要sstap那样的全局tizi
+* docker build -t coolq-dotnet47:v1.0 .      //生成镜像，可能需要sstap那样的全局tizi才能顺利生成镜像
 * mkdir coolq-data-dotnet47  //创建名coolq-data-dotnet47的文件夹
 * docker run --name=coolq_dotnet47 -d -p 8080:9000 -v /root/coolq-data-dotnet47:/home/user/coolq -e COOLQ_URL=http://dlsec.cqp.me/cqp-full -e VNC_PASSWD=密码 -e COOLQ_ACCOUNT=QQ号 coolq-dotnet47:v1.0
 //运行docker镜像
