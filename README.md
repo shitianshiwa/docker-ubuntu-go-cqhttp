@@ -55,6 +55,7 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 或
 * sudo apt-get install --no-install-recommends fcitx fcitx-ui-classic fcitx-pinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
 * im-config -s fcitx-pinyin
+* fcitx restart//不知道有没有用
 * https://blog.csdn.net/a145127/article/details/82903749
 * Linux安装fcitx输入法（命令安装）
 
