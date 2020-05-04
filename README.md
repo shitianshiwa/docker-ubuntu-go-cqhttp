@@ -47,6 +47,8 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 ## 提示1
 * windows系统版本为必须为windows vista才能正常运行net应用
 * 可以打开wine配置程序，修改windows系统版本为windows vista以正常运行net应用
+* 修复了winetricks打不开窗口的bug
+* 增加火狐浏览器,python2、3的pip工具，nodejs
 
 ## 提示2-可能冻结QQ号的操作
 * 异地登录后立刻修改昵称头像（可以先修改再异地登录）
