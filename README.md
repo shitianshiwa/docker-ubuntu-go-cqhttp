@@ -51,11 +51,20 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * 增加火狐浏览器,python2、3的pip工具，nodejs
 * fcitx是输入法(默认有安装，试一试ctrl+空格？ctrl要用vnc控制台提供的按键)
 * im-config(im-switch) 是设置输入法 
+
+#### 删除现有的
+* apt purge fcitx fcitx-ui-classic fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table*
+* apt autoremove
+* apt clean
+#### 再安装
 * sudo apt-get install im-config libapt-pkg-perl fcitx fcitx-table-wbpy -y
 或
-* sudo apt-get install --no-install-recommends fcitx fcitx-ui-classic fcitx-pinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
+* sudo apt-get install --no-install-recommends fcitx fcitx-table-wbpy fcitx-ui-classic fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
+* im-config -s fcitx-pinyin
+* sudo apt-get install fcitx-m17n
 * im-config -s fcitx-pinyin
 * fcitx restart//不知道有没有用
+* ctrl-alt-5 重载配置
 * https://blog.csdn.net/a145127/article/details/82903749
 * Linux安装fcitx输入法（命令安装）
 
