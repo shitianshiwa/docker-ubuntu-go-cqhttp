@@ -51,7 +51,7 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * 增加火狐浏览器,python2、3的pip工具，nodejs
 * fcitx是输入法(默认有安装，试一试ctrl+空格？ctrl要用vnc控制台提供的按键)
 * im-config(im-switch) 是设置输入法 
-
+### 输入法可能还要折腾下才能正常使用？
 #### 删除现有的
 * apt purge fcitx fcitx-ui-classic fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table*
 * apt autoremove
