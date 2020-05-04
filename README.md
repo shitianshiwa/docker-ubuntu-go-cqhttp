@@ -78,13 +78,17 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * 大量高危账号在同一个ip登录（可以慢慢加，一台服务器最好不超过5个账号）
 
 ## 使用Dockerfile生成的docker镜像
+### 安装docker 
+* https://docs.docker.com/get-docker/
+* https://yeasy.gitbook.io/docker_practice/install
 * sudo apt  install docker.io  //按照docker
 
 - 然后检查docker版本：
 * sudo docker version
 
+### 生成容器运行
 * cd Dockerfile文件所在路径     //跳转到指定路径
-* docker build -t coolq-dotnet47:v1.0 .      //生成镜像
+* docker build -t coolq-dotnet47:v1.0 .      //生成镜像，可能需要sstap那样的全局tizi
 * mkdir coolq-data-dotnet47  //创建名coolq-data-dotnet47的文件夹
 * docker run --name=coolq_dotnet47 -d -p 8080:9000 -v /root/coolq-data-dotnet47:/home/user/coolq -e COOLQ_URL=http://dlsec.cqp.me/cqp-full -e VNC_PASSWD=密码 -e COOLQ_ACCOUNT=QQ号 coolq-dotnet47:v1.0
 //运行docker镜像
