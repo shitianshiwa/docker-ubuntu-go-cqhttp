@@ -64,7 +64,8 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * sudo apt-get install fcitx-m17n
 * im-config -s fcitx-pinyin
 * fcitx restart//不知道有没有用
-* ctrl-alt-5 重载配置
+* ctrl+5 重载配置
+ctrl+alt+b 开启/关闭虚拟键盘
 * https://blog.csdn.net/a145127/article/details/82903749
 * Linux安装fcitx输入法（命令安装）
 
