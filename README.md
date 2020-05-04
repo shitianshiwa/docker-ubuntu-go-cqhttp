@@ -48,7 +48,7 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * windows系统版本为必须为windows vista才能正常运行net应用
 * 可以打开wine配置程序，修改windows系统版本为windows vista以正常运行net应用
 
-## 提示2-可能被冻结QQ号的操作
+## 提示2-可能冻结QQ号的操作
 * 异地登录后立刻修改昵称头像（可以先修改再异地登录）
 * 新注册的号在机房ip登录（ip真人鉴别有很多，比如这个）
 * 机器人大量地发长消息（尤其是抽卡，条件允许可以改用图片抽卡）
