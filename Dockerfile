@@ -29,11 +29,19 @@ RUN chown root:root /tmp && \
     apt-get install zenity -y && \
     apt-get install firefox -y && \
     apt-get install python python3 python-pip python3-pip -y && \
-    apt-get install nodejs npm -y && \
+    python2 -m pip install --upgrade pip && \
+    python3 -m pip install --upgrade pip && \
+    python3 -m pip install numpy && \
+    apt-get install ffmpeg graphicsmagick mediainfo -y && \
+    apt-get install iftop && \
     apt-get install build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1 -y && \
     wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
     tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 -C /usr/local/share/ && \
     ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/ && \
+    apt-get install nodejs npm -y && \
+    npm install -g n && \
+    n stable && \
+    npm i -g npm n && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists
