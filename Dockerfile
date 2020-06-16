@@ -16,8 +16,6 @@ RUN chown root:root /tmp && \
     apt-get install -y \
         cabextract unzip python-numpy \
         language-pack-zh-hans tzdata fontconfig && \
-    apt-get install --no-install-recommends \
-        fcitx fcitx-ui-classic fcitx-pinyin -y && \
     apt-get install  --allow-unauthenticated --install-recommends winehq-devel -y && \
     wget -O /usr/local/bin/winetricks https://github.com/Winetricks/winetricks/raw/master/src/winetricks && \
     chmod 755 /usr/local/bin/winetricks && \
@@ -43,12 +41,11 @@ RUN chown root:root /tmp && \
     n stable && \
     npm i -g npm n && \
     apt-get install im-config libapt-pkg-perl -y && \
-    apt-get install --no-install-recommends fcitx \
-        fcitx-table-wbpy fcitx-ui-classic fcitx-pinyin \
+    apt-get install fcitx fcitx-table-wbpy fcitx-ui-classic fcitx-pinyin \
         fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 \
         fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* fcitx-m17n -y && \
-    im-config -s fcitx-pinyin && \
-    apt-get install p7zip-full && \
+    im-config -s fcitx-pinyin  && \
+    fcitx restart  && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists
