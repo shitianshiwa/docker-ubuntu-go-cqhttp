@@ -170,6 +170,13 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * sudo nano /etc/conf.d/wondershaper.conf //编辑配置文件 ctrl+字母选择功能
 * sudo wondershaper -c -a eth0 //解除限速，网卡
 * sudo wondershaper -a eth0 -d 12440 -u 12440 //设置限速 网卡，下载，上传
+### 限制某个程序的网速
+* https://blog.csdn.net/jb19900111/article/details/17756195
+* sudo apt-get update
+* sudo apt-get install trickle -y
+* trickle -v
+* trickle  -s -d 1450 -u 1450 XXXX程序名
+* /usr/bin/trickle -s -d 1450 -u 1450 XXXX程序名
 
 ### 包清理
 * apt-get autoremove -y
