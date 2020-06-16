@@ -42,6 +42,13 @@ RUN chown root:root /tmp && \
     npm install -g n && \
     n stable && \
     npm i -g npm n && \
+    apt-get install im-config libapt-pkg-perl -y && \
+    apt-get install --no-install-recommends fcitx \
+        fcitx-table-wbpy fcitx-ui-classic fcitx-pinyin \
+        fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 \
+        fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* fcitx-m17n -y && \
+    im-config -s fcitx-pinyin && \
+    apt-get install p7zip-full && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists
@@ -51,7 +58,7 @@ RUN chsh -s /bin/bash user && \
     su user -c '/usr/bin/wine regedit.exe /s /tmp/coolq.reg' && \
     su user -c 'wineboot' && \
     echo 'quiet=on' > /etc/wgetrc && \
-    su user -c '/usr/local/bin/winetricks -q dotnet472' && \
+    su user -c '/usr/local/bin/winetricks -q dotnet48' && \
     su user -c '/usr/local/bin/winetricks -q vista' && \
     su user -c '/usr/local/bin/winetricks -q /tmp/winhttp_2ksp4.verb' && \
     su user -c '/usr/local/bin/winetricks -q msscript' && \
