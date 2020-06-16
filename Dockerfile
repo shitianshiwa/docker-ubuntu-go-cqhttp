@@ -40,12 +40,6 @@ RUN chown root:root /tmp && \
     npm install -g n && \
     n stable && \
     npm i -g npm n && \
-    apt-get install im-config libapt-pkg-perl -y && \
-    apt-get install fcitx fcitx-table-wbpy fcitx-ui-classic fcitx-pinyin \
-        fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 \
-        fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* fcitx-m17n -y && \
-    im-config -s fcitx-pinyin  && \
-    fcitx restart  && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists
