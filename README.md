@@ -62,10 +62,13 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * sudo apt-get install im-config libapt-pkg-perl -y
 * sudo apt-get install --no-install-recommends fcitx fcitx-table-wbpy fcitx-ui-classic fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
 * sudo apt-get install fcitx-m17n -y
-* im-config -s fcitx-pinyin
-* fcitx restart
-* ctrl+5 重载配置
-ctrl+alt+b 开启/关闭虚拟键盘
+* apt-get install whiptail -y
+* xshell内 im-config -s fcitx-pinyin
+* xshell内 fcitx restart
+* 鼠标右键修改Input Method 为fcitx
+* vnc窗口内 ctrl+5 重载配置
+* vnc窗口内 ctrl+alt+b 开启/关闭虚拟键盘
+* 然后也不知道会不会成功。。！
 * https://blog.csdn.net/a145127/article/details/82903749
 * Linux安装fcitx输入法（命令安装）
 
