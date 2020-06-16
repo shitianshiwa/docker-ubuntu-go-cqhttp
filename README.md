@@ -1,4 +1,4 @@
-# docker-wine-coolq-dotnet472-autoins
+# docker-wine-coolq-dotnet48-autoins
 
 docker-wine-coolq 可以使你通过 Wine 在 Docker 容器中运行 酷Q Air 或 酷Q Pro。本项目仅对 x86_64 平台提供支持，**暂不支持**树莓派、路由器等 Arm 架构硬件。
 
@@ -51,19 +51,19 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * 增加火狐浏览器,python2、3的pip工具，nodejs
 * fcitx是输入法(默认有安装，试一试ctrl+空格？ctrl要用vnc控制台提供的按键)
 * im-config(im-switch) 是设置输入法 
-### 输入法可能还要折腾下才能正常使用？
+* 增加酷Q意外退出会自动清理其相关的进程，以防泄露到外部
+* 增加vim，nano，meidainfo，ffmpeg，graphicsmagick，iftop模块 
+
+### 输入法我不知道怎样才能保证可以正常启动。。！9成以上概率启动不了
 #### 删除现有的
-* apt purge fcitx fcitx-ui-classic fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table*
-* apt autoremove
-* apt clean
+* apt purge fcitx fcitx-ui-classic fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
+* apt autoremove -y
 #### 再安装
-* sudo apt-get install im-config libapt-pkg-perl fcitx fcitx-table-wbpy -y
-或
+* sudo apt-get install im-config libapt-pkg-perl -y
 * sudo apt-get install --no-install-recommends fcitx fcitx-table-wbpy fcitx-ui-classic fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
+* sudo apt-get install fcitx-m17n -y
 * im-config -s fcitx-pinyin
-* sudo apt-get install fcitx-m17n
-* im-config -s fcitx-pinyin
-* fcitx restart//不知道有没有用
+* fcitx restart
 * ctrl+5 重载配置
 ctrl+alt+b 开启/关闭虚拟键盘
 * https://blog.csdn.net/a145127/article/details/82903749
