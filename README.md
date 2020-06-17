@@ -59,16 +59,26 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * apt purge fcitx fcitx-ui-classic fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
 * apt autoremove -y
 #### 再安装
-* sudo apt-get install im-config libapt-pkg-perl -y
-* sudo apt-get install --no-install-recommends fcitx fcitx-table-wbpy fcitx-ui-classic fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
-* sudo apt-get install fcitx-m17n -y
-* apt-get install whiptail -y
-* xshell内 im-config -s fcitx-pinyin
-* xshell内 fcitx restart
+* apt-get update
+* apt-get install im-config -y 
+* apt-get install libapt-pkg-perl -y 
+* apt-get install fcitx -y 
+* apt-get install fcitx-table-wbpy -y 
+* apt-get install fcitx-ui-classic -y 
+* apt-get install fcitx-pinyin -y 
+* apt-get install fcitx-googlepinyin -y 
+* apt-get install fcitx-frontend-gtk2 -y 
+* apt-get install fcitx-sunpinyin -y 
+* apt-get install fcitx-frontend-gtk3 -y 
+* apt-get install fcitx-frontend-qt4 -y 
+* apt-get install fcitx-table* -y 
+* apt-get install fcitx-m17n -y 
+* im-config -s fcitx  
+* fcitx restart  
 * 鼠标右键修改Input Method 为fcitx
 * vnc窗口内 ctrl+5 重载配置
 * vnc窗口内 ctrl+alt+b 开启/关闭虚拟键盘
-* 然后也不知道会不会成功。。！
+* 然后也不知道会不会成功。。！不行多装几次
 * https://blog.csdn.net/a145127/article/details/82903749
 * Linux安装fcitx输入法（命令安装）
 
