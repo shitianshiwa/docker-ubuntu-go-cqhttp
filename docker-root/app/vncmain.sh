@@ -30,12 +30,14 @@ while true; do
     echo "[CQDaemon] CoolQ exited. Killing wine ..."
     wine wineboot --kill
     wineserver -k9
-    echo "[CQDaemon] Killing winedevice plugplay explorer services CQP.exe..."
+    echo "[CQDaemon] Killing winedevice plugplay explorer services CQP.exe firefox.exe mscorsvw.exe..."
     ps -ef | grep winedevice.exe | grep -v grep | cut -c 9-15| xargs kill -s 9
     ps -ef | grep plugplay.exe | grep -v grep | cut -c 9-15 | xargs kill -s 9
     ps -ef | grep explorer.exe | grep -v grep | cut -c 9-15 | xargs kill -s 9
     ps -ef | grep services.exe | grep -v grep | cut -c 9-15 | xargs kill -s 9
     ps -ef | grep CQP.exe | grep -v grep | cut -c 9-15 | xargs kill -s 9
+    ps -ef | grep firefox.exe|grep -v grep| cut -c 9-15 | xargs kill -s 9
+    ps -ef | grep mscorsvw.exe|grep -v grep| cut -c 9-15 | xargs kill -s 9
     echo "[CQDaemon] CoolQ will start after 3 seconds ..."
     sleep 3
 done
