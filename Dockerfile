@@ -77,12 +77,12 @@ RUN chsh -s /bin/bash user && \
     su user -c 'WINEARCH=win32 /usr/bin/wine wineboot' && \
     su user -c '/usr/bin/wine regedit.exe /s /tmp/coolq.reg' && \
     su user -c 'wineboot' && \
-    echo 'quiet=on' > /etc/wgetrc && \ 
+    echo 'quiet=on' > /etc/wgetrc && \
+    su user -c '/usr/local/bin/winetricks -q dotnet48' && \    
     su user -c '/usr/local/bin/winetricks -q vista' && \
     su user -c '/usr/local/bin/winetricks -q /tmp/winhttp_2ksp4.verb' && \
     su user -c '/usr/local/bin/winetricks -q msscript' && \
     su user -c '/usr/local/bin/winetricks -q fontsmooth=rgb' && \
-    su user -c '/usr/local/bin/winetricks -q dotnet48' && \   
     wget https://dlsec.cqp.me/docker-simsun -O /tmp/simsun.zip && \
     mkdir -p /home/user/.wine/drive_c/windows/Fonts && \
     unzip /tmp/simsun.zip -d /home/user/.wine/drive_c/windows/Fonts && \
