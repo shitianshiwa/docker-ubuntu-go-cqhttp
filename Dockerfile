@@ -25,12 +25,12 @@ RUN chown root:root /tmp && \
     apt-get update && \
     apt-get install winetricks -y --fix-missing && \
     apt-get install zenity -y && \
+    sudo apt-get install winbind -y && \
     apt-get install firefox -y && \
     apt-get install python python3 python-pip python3-pip -y && \
     python2 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install numpy && \
-    apt-get install ffmpeg graphicsmagick mediainfo -y && \
     apt-get install iftop && \
     apt-get install build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1 -y && \
     wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
@@ -40,7 +40,21 @@ RUN chown root:root /tmp && \
     npm install -g n && \
     n stable && \
     npm i -g npm n && \
+    apt-get install ffmpeg graphicsmagick -y && \
+    npm install gify && \
+    apt-get install git automake autoconf pkg-config make g++ libtool zlib1g-dev libmms0 libwxbase3.0-0v5 libwxgtk3.0-0v5 -y && \
+    wget https://mediaarea.net/download/binary/libzen0/0.4.38/libzen0v5_0.4.38-1_amd64.xUbuntu_18.04.deb && \
+    dpkg -i libzen0v5_0.4.38-1_amd64.xUbuntu_18.04.deb && \
+    wget https://mediaarea.net/download/binary/libmediainfo0/20.03/libmediainfo0v5_20.03-1_amd64.xUbuntu_18.04.deb && \
+    dpkg -i libmediainfo0v5_20.03-1_amd64.xUbuntu_18.04.deb && \
+    wget https://mediaarea.net/download/binary/mediainfo/20.03/mediainfo_20.03-1_amd64.xUbuntu_18.04.deb && \
+    dpkg -i mediainfo_20.03-1_amd64.xUbuntu_18.04.deb && \
+    wget https://mediaarea.net/download/binary/mediainfo-gui/20.03/mediainfo-gui_20.03-1_amd64.xUbuntu_18.04.deb && \
+    dpkg -i mediainfo-gui_20.03-1_amd64.xUbuntu_18.04.deb && \
+    apt --fix-broken install -y && \
     apt-get install vim nano -y && \
+    apt-get install default-jre -y && \
+    apt-get install openjdk-11-jre-headless -y && \
     apt-get install whiptail im-config libapt-pkg-perl -y && \
     apt-get install fcitx -y && \
     apt-get install fcitx-table-wbpy -y && \
@@ -63,12 +77,12 @@ RUN chsh -s /bin/bash user && \
     su user -c 'WINEARCH=win32 /usr/bin/wine wineboot' && \
     su user -c '/usr/bin/wine regedit.exe /s /tmp/coolq.reg' && \
     su user -c 'wineboot' && \
-    echo 'quiet=on' > /etc/wgetrc && \
-    su user -c '/usr/local/bin/winetricks -q dotnet48' && \
+    echo 'quiet=on' > /etc/wgetrc && \ 
     su user -c '/usr/local/bin/winetricks -q vista' && \
     su user -c '/usr/local/bin/winetricks -q /tmp/winhttp_2ksp4.verb' && \
     su user -c '/usr/local/bin/winetricks -q msscript' && \
     su user -c '/usr/local/bin/winetricks -q fontsmooth=rgb' && \
+    su user -c '/usr/local/bin/winetricks -q dotnet48' && \   
     wget https://dlsec.cqp.me/docker-simsun -O /tmp/simsun.zip && \
     mkdir -p /home/user/.wine/drive_c/windows/Fonts && \
     unzip /tmp/simsun.zip -d /home/user/.wine/drive_c/windows/Fonts && \
