@@ -26,10 +26,13 @@ RUN chown root:root /tmp && \
     apt-get install winetricks -y --fix-missing && \
     apt-get install zenity -y && \
     apt-get install firefox -y && \
-    apt-get install python python3 python-pip python3-pip -y && \
+    apt-get install python python3 python3.7 python-pip python3-pip -y && \
     python2 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade pip && \
+    python3.7 -m pip install --upgrade pip && \
     python3 -m pip install numpy BeautifulSoup4 requests lxml selenium html5lib apscheduler && \
+    python3.7 -m pip install numpy BeautifulSoup4 requests lxml selenium html5lib apscheduler \
+    emoji==0.5.4 httpx==0.12.1 feedparser==5.2.1 nonebot==1.5.0 requests==2.21.0 googletrans==2.4.0 apscheduler==3.6.3 pyquery==1.4.1 && \
     apt-get install iftop && \
     apt-get install build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1 -y && \
     wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
