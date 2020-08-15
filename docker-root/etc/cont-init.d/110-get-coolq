@@ -8,9 +8,10 @@ else
     #mkdir /tmp/cq
     #wget $COOLQ_URL -O /tmp/cq/coolq.zip
     #echo 'Unzipping CoolQ ...'
-    #cd /tmp/cq
+    cd /tmp/cq
     #LC_ALL=zh_CN.UTF-8 unzip coolq.zip > /dev/null
-    #mv */* /home/user/coolq
+    mv */* /home/user/coolq
+    echo '用来卡住wine无限重启'
     #chown -R user:user /home/user/coolq
     #rm -rf /tmp/cq
 fi
