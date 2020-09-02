@@ -1,4 +1,4 @@
-FROM novnc:v0.3.0
+FROM oott123/novnc:v0.3.0
 
 COPY ./docker-root /
 
