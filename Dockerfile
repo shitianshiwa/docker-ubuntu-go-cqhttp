@@ -47,13 +47,27 @@ RUN chown root:root /tmp && \
     libxcb-xfixes0-dev pkg-config texinfo zlib1g-dev && \
     apt-get install -y yasm libx264-dev cmake mercurial libfdk-aac-dev libmp3lame-dev nasm libopus-dev libvpx-dev && \
     apt-get install git automake autoconf pkg-config make g++ libtool zlib1g-dev libmms0 libwxbase3.0-0v5 libwxgtk3.0-0v5 -y && \
+    wget http://www.penguin.cz/~utx/ftp/amr/amrnb-11.0.0.0.tar.bz2 && \
+    tar xvjf amrnb-11.0.0.0.tar.bz2 && \
+    cd amrnb-11.0.0.0 && \
+    ./configure && \
+    make -j4 && make install && cd ../ && \
+    wget http://www.penguin.cz/~utx/ftp/amr/amrwb-11.0.0.0.tar.bz2 && \
+    tar xvjf amrwb-11.0.0.0.tar.bz2 && \
+    cd amrwb-11.0.0.0 && \
+    ./configure && \
+    make -j4 && make install && cd ../ && \
+    wget https://jaist.dl.sourceforge.net/project/opencore-amr/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz && \
+    tar -xzvf vo-amrwbenc-0.1.3.tar.gz && \
+    cd vo-amrwbenc-0.1.3 && \
+    ./configure && \
+    make -j4 && make install && cd ../ && \
     wget https://jaist.dl.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.5.tar.gz && \
     chmod 755 opencore-amr-0.1.5.tar.gz && \
     tar -xzvf opencore-amr-0.1.5.tar.gz && \
     cd opencore-amr-0.1.5 && \
-    ./configure --enable-shared=no --enable-static=yes && \
-    make -j4 && \
-    make install && \
+    ./configure && \
+    make -j4 && make install && cd ../ && \
     wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:4.2.4-1ubuntu0.1/ffmpeg_4.2.4.orig.tar.xz && \
     chmod 755 ffmpeg_4.2.4.orig.tar.xz && \
     xz -d ffmpeg_4.2.4.orig.tar.xz && \
@@ -79,10 +93,10 @@ RUN chown root:root /tmp && \
         --enable-version3 \
         --disable-ffplay \
         --disable-ffprobe \
+        --enable-openssl \
         --enable-libopencore-amrnb \
         --enable-libopencore-amrwb && \
-    make -j4 && \
-    make install && \
+    make -j4 && make install && cd ../ && \
     apt-get install graphicsmagick -y && \
     npm install gify && \
     wget https://mediaarea.net/download/binary/libzen0/0.4.38/libzen0v5_0.4.38-1_amd64.xUbuntu_18.04.deb && \
@@ -111,6 +125,14 @@ RUN chown root:root /tmp && \
     apt-get install fcitx-m17n -y && \
     im-config -s fcitx && \
     fcitx restart && \
+    wget -O mongodb-linux-x86_64-ubuntu1804-4.2.9.tar https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1804-4.2.9.tgz && \
+    tar -zxvf mongodb-linux-x86_64-ubuntu1804-4.2.9.tar && \
+    cd mongodb-linux-x86_64-ubuntu1804-4.2.9 && \
+    sudo cp ./bin/* /usr/local/bin/ && \
+    sudo mkdir -p /var/lib/mongo && \
+    sudo mkdir -p /var/log/mongodb && \
+    sudo chown 777 /var/lib/mongo && \
+    sudo chown 777 /var/log/mongodb && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists
