@@ -1,5 +1,7 @@
 # docker-wine-coolq-dotnet48-autoins
 
+coolq已R.I.P,现在改支持go-cqhttp
+
 docker-wine-coolq 可以使你通过 Wine 在 Docker 容器中运行 酷Q Air 或 酷Q Pro。本项目仅对 x86_64 平台提供支持，**暂不支持**树莓派、路由器等 Arm 架构硬件。
 
 即使该 dockerfile 仓库使用 GPL 发布，其中下载的软件仍然遵循其最终用户使用许可协议，请确认同意协议后再进行下载使用。
@@ -117,6 +119,10 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * docker stop coolq_dotnet47 //关闭
 * docker restart coolq_dotnet47 //重启
 * docker logs coolq_dotnet47 //日志
+* docker exec -it -u 0 coolq_dotnet47 /bin/bash
+* mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork
+* ffmpeg
+* mongo
 
 * docker container ls -a //列出所有容器
 * docker container ls //列出运行中的容器
