@@ -13,30 +13,32 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 
 
 ### 生成镜像
-* cd Dockerfile文件所在路径     //跳转到指定路径
-* docker build -t coolq-dotnet47:v1.0 .      //生成镜像，可能需要sstap那样的全局tizi才能顺利生成镜像
+* cd Dockerfile文件所在路径     #跳转到指定路径
+* docker build -t coolq-dotnet47:v1.0 .      #生成镜像，可能需要sstap那样的全局tizi才能顺利生成镜像
 
 
 ## 镜像保存重装 
-* docker commit -p 容器ID  coolq_dotnet47-backup //备份容器生成镜像备份
-* docker save -o ~/coolq_dotnet47-backup.tar coolq_dotnet47-backup //生成本地镜像备份文件
-* docker load -i ~/coolq_dotnet47-backup.tar //读取路径中的镜像备份文件
+* docker commit -p 容器ID  coolq_dotnet47-backup #备份容器生成镜像备份
+* docker save -o ~/coolq_dotnet47-backup.tar coolq_dotnet47-backup #生成本地镜像备份文件
+* docker load -i ~/coolq_dotnet47-backup.tar #读取路径中的镜像备份文件
 
 ## 常用使用命令
-* docker start coolq_dotnet47 //开启
-* docker stop coolq_dotnet47 //关闭
-* docker restart coolq_dotnet47 //重启
-* docker logs coolq_dotnet47 //日志
-* docker exec -it -u 0 coolq_dotnet47 /bin/bash
+* docker start coolq_dotnet47 #开启
+* docker stop coolq_dotnet47 #关闭
+* docker restart coolq_dotnet47 #重启
+* docker logs coolq_dotnet47 #日志
+* docker exec -it -u 0 coolq_dotnet47 /bin/bash #以root权限进入容器内部
 * mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork
 * ffmpeg
 * mongo
 
-* docker container ls -a //列出所有容器
-* docker container ls //列出运行中的容器
-* docker images //列出镜像列表
+* docker container ls -a #列出所有容器
+* docker container ls #列出运行中的容器
+* docker images #列出镜像列表
 
-* sudo docker exec -ti -u root 容器ID   bash //控制台转入容器内部
+* sudo docker exec -ti -u root 容器ID   bash #以root权限从控制台转入容器内部
+* sudo docker exec -ti -u user 容器ID   bash #以user权限从控制台转入容器内部
+* sudo docker exec -it -u 0 coolq_dotnet47 /bin/bash
 
 * docker rm 容器ID //删掉指定容器，需要先停止容器
 * docker rmi 镜像ID  //删掉指定镜像，需要先删除所生成的容器
@@ -44,6 +46,7 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 * docker rm $(docker ps -a -q) //删除所有container
 * docker rmi $(docker images | grep "^<none>" | awk "{print $3}")//想要删除untagged images，也就是那些id为<None>的image的话可以用。我也不知道是什么。。！
 * docker rmi $(docker images -q)//要删除全部image的话
+ 待补充。。。
 
 ### 让外界ip无法访问VNC控制台,仅服务器自己的ip可以访问。重启的docker容器后会重置为外界可以访问
 * iptables -t nat -L -n
