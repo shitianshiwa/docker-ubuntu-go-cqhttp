@@ -46,6 +46,7 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 * docker rm $(docker ps -a -q) //删除所有container
 * docker rmi $(docker images | grep "^<none>" | awk "{print $3}")//想要删除untagged images，也就是那些id为<None>的image的话可以用。我也不知道是什么。。！
 * docker rmi $(docker images -q)//要删除全部image的话
+
  待补充。。。
 
 ### 让外界ip无法访问VNC控制台,仅服务器自己的ip可以访问。重启的docker容器后会重置为外界可以访问
@@ -53,15 +54,15 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 * iptables -t nat  -D DOCKER  2
 * iptables -t nat -L -n
 
-### 运行
+## 运行
 
-* mkdir coolq-data-dotnet47  //创建名coolq-data-dotnet47的文件夹
+* mkdir coolq-data-dotnet47  #创建名coolq-data-dotnet47的文件夹
 * docker run --name=coolq_dotnet47 -d -p 8080:9000 -v /root/coolq-data-dotnet47:/home/user/coolq -e COOLQ_URL= -e VNC_PASSWD=密码 -e COOLQ_ACCOUNT=QQ号 coolq-dotnet47:v1.0
-//运行docker镜像
+#运行docker镜像
 
-即可运行一个 docker-wine-go-cqhttp 实例。运行后，访问 `http://你的IP:9000` 可以打开一个 VNC 页面，输入密码登陆
+* 即可运行一个 docker-wine-go-cqhttp 实例。运行后，访问 `http://你的IP:9000` 可以打开一个 VNC 页面，输入密码登陆
 
-数据文件会保存在容器内的 `/home/user/coolq` 文件夹下，映射到主机上则为上述命令第二步创建的文件夹。调整 `-v` 的参数可以改变主机映射的路径。
+* 数据文件会保存在容器内的 `/home/user/coolq` 文件夹下，映射到主机上则为上述命令第二步创建的文件夹。调整 `-v` 的参数可以改变主机映射的路径。
 
 
 ## 环境变量
@@ -220,4 +221,4 @@ https://blog.csdn.net/weixin_39198406/article/details/79267687
 - ubuntu 默认防火墙安装、启用、查看状态 - VincentZhu - 博客园
 - https://www.cnblogs.com/OnlyDreams/p/7210914.html
 
-。。。
+待补充。。。
