@@ -2,41 +2,64 @@
 
 coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 
-docker-wine-coolq 可以使你通过 Wine 在 Docker 容器中运行 酷Q Air 或 酷Q Pro。本项目仅对 x86_64 平台提供支持，**暂不支持**树莓派、路由器等 Arm 架构硬件。
+## 使用Dockerfile生成的docker镜像
+### 安装docker 
+* https://docs.docker.com/get-docker/
+* https://yeasy.gitbook.io/docker_practice/install
+* sudo apt  install docker.io  //安装docker
 
-即使该 dockerfile 仓库使用 GPL 发布，其中下载的软件仍然遵循其最终用户使用许可协议，请确认同意协议后再进行下载使用。
+- 然后检查docker版本：
+* sudo docker version
 
-随着版本更新，wine 的 酷Q 并不保证总是可用。若你遇到不可用问题，在严格按照下述步骤执行后仍可复现，请在 [社区](https://cqp.cc/b/issue) 反馈。
 
-## 下载使用
+### 生成镜像
+* cd Dockerfile文件所在路径     //跳转到指定路径
+* docker build -t coolq-dotnet47:v1.0 .      //生成镜像，可能需要sstap那样的全局tizi才能顺利生成镜像
 
-如果你在服务器上使用 `docker` 或者和 docker 兼容的服务，只需执行：
 
-```bash
-docker pull coolq/wine-coolq
-mkdir coolq && cd coolq
-docker run --rm -p 9000:9000 -v `pwd`:/home/user/coolq coolq/wine-coolq
-```
+## 镜像保存重装 
+* docker commit -p 容器ID  coolq_dotnet47-backup //备份容器生成镜像备份
+* docker save -o ~/coolq_dotnet47-backup.tar coolq_dotnet47-backup //生成本地镜像备份文件
+* docker load -i ~/coolq_dotnet47-backup.tar //读取路径中的镜像备份文件
 
-即可运行一个 wine-coolq 实例。运行后，访问 `http://你的IP:9000` 可以打开一个 VNC 页面，输入 `MAX8char` 作为密码后即可看到一个 酷Q Air 已经启动。
+## 常用使用命令
+* docker start coolq_dotnet47 //开启
+* docker stop coolq_dotnet47 //关闭
+* docker restart coolq_dotnet47 //重启
+* docker logs coolq_dotnet47 //日志
+* docker exec -it -u 0 coolq_dotnet47 /bin/bash
+* mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork
+* ffmpeg
+* mongo
 
-酷Q 和其数据文件会保存在容器内的 `/home/user/coolq` 文件夹下，映射到主机上则为上述命令第二步创建的文件夹。调整 `-v` 的参数可以改变主机映射的路径。
+* docker container ls -a //列出所有容器
+* docker container ls //列出运行中的容器
+* docker images //列出镜像列表
 
-## 常用示例
+* sudo docker exec -ti -u root 容器ID   bash //控制台转入容器内部
 
-### 使用酷Q Pro
+* docker rm 容器ID //删掉指定容器，需要先停止容器
+* docker rmi 镜像ID  //删掉指定镜像，需要先删除所生成的容器
+* docker stop $(docker ps -a -q) //停止所有的container
+* docker rm $(docker ps -a -q) //删除所有container
+* docker rmi $(docker images | grep "^<none>" | awk "{print $3}")//想要删除untagged images，也就是那些id为<None>的image的话可以用。我也不知道是什么。。！
+* docker rmi $(docker images -q)//要删除全部image的话
 
-```bash
-# 请先自行删除老的 coolq 目录
-mkdir coolq
-docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e COOLQ_URL=http://dlsec.cqp.me/cqp-full coolq/wine-coolq
-```
+### 让外界ip无法访问VNC控制台,仅服务器自己的ip可以访问。重启的docker容器后会重置为外界可以访问
+* iptables -t nat -L -n
+* iptables -t nat  -D DOCKER  2
+* iptables -t nat -L -n
 
-### 设置 VNC 密码
+### 运行
 
-```bash
-docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_PASSWD=12345678 coolq/wine-coolq
-```
+* mkdir coolq-data-dotnet47  //创建名coolq-data-dotnet47的文件夹
+* docker run --name=coolq_dotnet47 -d -p 8080:9000 -v /root/coolq-data-dotnet47:/home/user/coolq -e COOLQ_URL= -e VNC_PASSWD=密码 -e COOLQ_ACCOUNT=QQ号 coolq-dotnet47:v1.0
+//运行docker镜像
+
+即可运行一个 docker-wine-go-cqhttp 实例。运行后，访问 `http://你的IP:9000` 可以打开一个 VNC 页面，输入密码登陆
+
+数据文件会保存在容器内的 `/home/user/coolq` 文件夹下，映射到主机上则为上述命令第二步创建的文件夹。调整 `-v` 的参数可以改变主机映射的路径。
+
 
 ## 环境变量
 
@@ -90,54 +113,6 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * 账号在短时间内加了大量的群（可以慢慢加，最好不超过10个群）
 * 大量高危账号在同一个ip登录（可以慢慢加，一台服务器最好不超过5个账号）
 
-## 使用Dockerfile生成的docker镜像
-### 安装docker 
-* https://docs.docker.com/get-docker/
-* https://yeasy.gitbook.io/docker_practice/install
-* sudo apt  install docker.io  //按照docker
-
-- 然后检查docker版本：
-* sudo docker version
-
-### 生成容器运行
-* cd Dockerfile文件所在路径     //跳转到指定路径
-* docker build -t coolq-dotnet47:v1.0 .      //生成镜像，可能需要sstap那样的全局tizi才能顺利生成镜像
-* mkdir coolq-data-dotnet47  //创建名coolq-data-dotnet47的文件夹
-* docker run --name=coolq_dotnet47 -d -p 8080:9000 -v /root/coolq-data-dotnet47:/home/user/coolq -e COOLQ_URL=http://dlsec.cqp.me/cqp-full -e VNC_PASSWD=密码 -e COOLQ_ACCOUNT=QQ号 coolq-dotnet47:v1.0
-//运行docker镜像
-
-## 镜像保存重装 
-* docker commit -p 容器ID  coolq_dotnet47-backup //备份容器生成镜像备份
-* docker save -o ~/coolq_dotnet47-backup.tar coolq_dotnet47-backup //生成本地镜像备份文件
-* docker load -i ~/coolq_dotnet47-backup.tar //读取路径中的镜像备份文件
-
-## 常用使用命令
-* docker start coolq_dotnet47 //开启
-* docker stop coolq_dotnet47 //关闭
-* docker restart coolq_dotnet47 //重启
-* docker logs coolq_dotnet47 //日志
-* docker exec -it -u 0 coolq_dotnet47 /bin/bash
-* mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork
-* ffmpeg
-* mongo
-
-* docker container ls -a //列出所有容器
-* docker container ls //列出运行中的容器
-* docker images //列出镜像列表
-
-* sudo docker exec -ti -u root 容器ID   bash //控制台转入容器内部
-
-* docker rm 容器ID //删掉指定容器，需要先停止容器
-* docker rmi 镜像ID  //删掉指定镜像，需要先删除所生成的容器
-* docker stop $(docker ps -a -q) //停止所有的container
-* docker rm $(docker ps -a -q) //删除所有container
-* docker rmi $(docker images | grep "^<none>" | awk "{print $3}")//想要删除untagged images，也就是那些id为<None>的image的话可以用。我也不知道是什么。。！
-* docker rmi $(docker images -q)//要删除全部image的话
-
-### 让外界ip无法访问VNC控制台,仅服务器自己的ip可以访问。重启的docker容器后会重置为外界可以访问
-* iptables -t nat -L -n
-* iptables -t nat  -D DOCKER  2
-* iptables -t nat -L -n
 
 ### 更新
 * sudo apt update
