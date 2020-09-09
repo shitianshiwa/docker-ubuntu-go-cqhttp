@@ -1,6 +1,6 @@
 # docker-wine-go-cqhttp
 
-coolq已R.I.P,现在改支持go-cqhttp
+coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 
 docker-wine-coolq 可以使你通过 Wine 在 Docker 容器中运行 酷Q Air 或 酷Q Pro。本项目仅对 x86_64 平台提供支持，**暂不支持**树莓派、路由器等 Arm 架构硬件。
 
