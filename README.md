@@ -1,4 +1,4 @@
-# docker-wine-coolq-dotnet48-autoins
+# docker-wine-go-cqhttp
 
 coolq已R.I.P,现在改支持go-cqhttp
 
@@ -47,14 +47,11 @@ docker run --name=coolq -d -p 9000:9000 -v `pwd`/coolq:/home/user/coolq -e VNC_P
 * **`COOLQ_URL`** 设置下载 酷Q 的地址，默认为 `http://dlsec.cqp.me/cqa-tuling`，即 酷Q Air 图灵版。请确保下载后的文件能解压出 `酷Q Air/CQA.exe` 或 `酷Q Pro/CQP.exe`
 
 ## 提示1
-* windows系统版本为必须为windows vista才能正常运行net应用
-* 可以打开wine配置程序，修改windows系统版本为windows vista以正常运行net应用
 * 修复了winetricks打不开窗口的bug
-* 增加火狐浏览器,python2、3的pip工具，nodejs
+* 增加火狐浏览器,python2、3、3.8的pip工具，nodejs
 * fcitx是输入法(默认有安装，试一试ctrl+空格？ctrl要用vnc控制台提供的按键)
 * im-config(im-switch) 是设置输入法 
-* 增加酷Q意外退出会自动清理其相关的进程，以防泄露到外部
-* 增加vim，nano，meidainfo，ffmpeg，graphicsmagick，iftop模块 
+* 增加vim，nano，meidainfo，ffmpeg，graphicsmagick，iftop，mongo数据库模块 
 
 ### 输入法我不知道怎样才能保证可以正常启动。。！9成以上概率启动不了
 #### 删除现有的
