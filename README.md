@@ -11,6 +11,7 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 - 然后检查docker版本：
 * sudo docker version
 
+# 注意无法安装mysql等依赖systemctl的软件
 
 ### 生成镜像
 * cd Dockerfile文件所在路径     #跳转到指定路径
