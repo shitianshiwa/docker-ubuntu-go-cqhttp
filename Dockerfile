@@ -25,6 +25,7 @@ RUN chown root:root /tmp && \
     apt-get update && \
     apt-get install winetricks -y --fix-missing && \
     apt-get install zenity -y && \
+    apt-get install ubuntu-restricted-extras -y &&\
     apt-get install firefox -y && \
     apt-get install python python3 python3.8 python-pip python3-pip -y && \
     python2 -m pip install --upgrade pip && \
