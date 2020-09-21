@@ -29,7 +29,7 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 * docker restart coolq_dotnet47 #重启
 * docker logs coolq_dotnet47 #日志
 * docker exec -it -u 0 coolq_dotnet47 /bin/bash #以root权限进入容器内部
-* mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork
+### mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork #必须输入这个，因为mongo数据库不会自己启动
 * ffmpeg
 * mongo
 
