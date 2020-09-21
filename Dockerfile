@@ -152,7 +152,11 @@ RUN chsh -s /bin/bash user && \
     mkdir -p /home/user/.fonts/ && \
     ln -s /home/user/.wine/drive_c/windows/Fonts/simsun.ttc /home/user/.fonts/ && \
     chown -R user:user /home/user && \
-    su user -c 'fc-cache -v' && \
+    mkdir /usr/share/fonts/truetype/myfonts && \
+    mv /tmp/myfonts/* /usr/share/fonts/truetype/myfonts/ && \
+    su user -c 'mkfontscale' && \
+    su user -c 'mkfontdir' && \
+    su user -c 'fc-cache -fv' && \
     mkdir /home/user/coolq && \
     rm -rf /home/user/.cache/winetricks /tmp/* /etc/wgetrc
 
