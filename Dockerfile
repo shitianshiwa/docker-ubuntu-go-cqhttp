@@ -33,7 +33,7 @@ RUN chown root:root /tmp && \
     python3.8 -m pip install --upgrade pip && \
     python3 -m pip install numpy BeautifulSoup4 requests lxml selenium html5lib apscheduler && \
     python3.8 -m pip install numpy BeautifulSoup4 lxml selenium html5lib \
-    emoji==0.5.4 httpx==0.12.1 feedparser==5.2.1 nonebot==1.5.0 requests==2.21.0 googletrans==2.4.0 apscheduler==3.6.3 pyquery==1.4.1 && \
+    emoji==0.5.4 httpx==0.12.1 feedparser==5.2.1 nonebot==1.5.0 requests==2.21.0 googletrans==2.4.0 apscheduler==3.6.3 pyquery==1.4.1 ujson==3.2.0 msgpack==1.0.0 && \
     apt-get install iftop && \
     apt-get install build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1 -y && \
     wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
