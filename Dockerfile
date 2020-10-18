@@ -185,6 +185,14 @@ RUN chown root:root /tmp && \
     #mongo & exit && \
     #chmod 777 /home/headless/.mongorc.js && \
     #chmod 777 /home/headless/.dbshell && \
+    #Google Noto Color Emoji
+    apt install fonts-noto-color-emoji && \
+    #Symbola font
+    apt-get install ttf-ancient-fonts && \
+    #Twitter emoji
+    apt-add-repository ppa:eosrei/fonts && \
+    apt-get update && \
+    apt-get install fonts-twemoji-svginot && \
     mkdir /usr/share/fonts/truetype/myfonts && \
     mv /tmp/* /usr/share/fonts/truetype/myfonts/ && \
     mkfontscale && \
