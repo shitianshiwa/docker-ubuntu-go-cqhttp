@@ -1,32 +1,78 @@
-FROM oott123/novnc:v0.3.0
+# ./hooks/build latest
+# ./hooks/test latest
+# ./hooks/build dev
+# ./hooks/test dev
 
-COPY ./docker-root /
+### Build and test 'dev' tag locally like
+### ./hooks/build dev
+### ./hooks/test dev
+### or with additional arguments
+### ./hooks/build dev 
+### ./hooks/test dev --no-cache
+### or using the utility
+### ./utils/util-hdx.sh Dockerfile 3
+### ./utils/util-hdx.sh Dockerfile 4
+### The last output line should be '+ exit 0'
+### If '+ exit 1' then adjust the version sticker
+### variables in script './hooks/env'
+
+ARG BASETAG=latest
+
+FROM accetto/ubuntu-vnc-xfce:${BASETAG} as stage-install
+
+### Be sure to use root user
+USER 0
+
+### 'apt-get clean' runs automatically
+RUN apt-get update && apt-get install -y \
+        firefox \
+    && rm -rf /var/lib/apt/lists/*
+
+### Mitigating issue #3 (Firefox 77.0.1 scrambles pages) - rollback to version 76.0.1
+### Alternatively install an explicit Firefox version
+### http://releases.mozilla.org/pub/firefox/releases/67.0.4/linux-x86_64/en-US/firefox-67.0.4.tar.bz2
+# ENV \
+#     FIREFOX_VERSION=76.0.1 \
+#     FIREFOX_DISTRO=linux-x86_64 \
+#     FIREFOX_PATH=/usr/lib/firefox
+# RUN mkdir -p ${FIREFOX_PATH} \
+#     && wget -qO- http://releases.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/${FIREFOX_DISTRO}/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 \
+#         | tar xvj -C /usr/lib/ \
+#     && ln -s ${FIREFOX_PATH}/firefox /usr/bin/firefox
+
+### Alternatively install an explicit Firefox version
+### http://releases.mozilla.org/pub/firefox/releases/67.0.4/linux-x86_64/en-US/firefox-67.0.4.tar.bz2
+# ENV \
+#     FIREFOX_VERSION=67.0.4 \
+#     FIREFOX_DISTRO=linux-x86_64 \
+#     FIREFOX_PATH=/usr/lib/firefox
+# RUN mkdir -p ${FIREFOX_PATH} \
+#     && wget -qO- http://releases.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/${FIREFOX_DISTRO}/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 \
+#         | tar xvj -C /usr/lib/ \
+#     && ln -s ${FIREFOX_PATH}/firefox /usr/bin/firefox
+
+FROM stage-install as stage-config
+
+### Arguments can be provided during build
+ARG ARG_VNC_USER
+
+ENV VNC_USER=${ARG_VNC_USER:-headless:headless}
+
+WORKDIR ${HOME}
+SHELL ["/bin/bash", "-c"]
+
+COPY [ "./src/create_user_and_fix_permissions.sh", "./" ]
+
+COPY ["./src/tmp", "./"]
 
 # RUN sed -i 's#/archive.ubuntu.com/#/mirrors.ustc.edu.cn/#g' /etc/apt/sources.list
 
 RUN chown root:root /tmp && \
     chmod 1777 /tmp && \
     apt-get update && \
-    apt-get install -y wget software-properties-common apt-transport-https apt-utils && \
-    wget -O- -nc https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-    apt-add-repository -y 'https://dl.winehq.org/wine-builds/ubuntu/ bionic main' && \
-    add-apt-repository -y ppa:cybermax-dexter/sdl2-backport && \
-    dpkg --add-architecture i386 && \
-    apt-get update && \
     apt-get install -y \
         cabextract unzip python-numpy \
         language-pack-zh-hans tzdata fontconfig && \
-    apt-get install -y --install-recommends winehq-stable && \
-    wget -O /usr/local/bin/winetricks https://github.com/Winetricks/winetricks/raw/master/src/winetricks && \
-    chmod 755 /usr/local/bin/winetricks && \
-    wget -O /tmp/gecko.tar.gz http://dl.winehq.org/wine/wine-gecko/2.47.1/wine-gecko-2.47.1-x86.tar.bz2 && \
-    mkdir -p /usr/share/wine/gecko && \
-    tar xf /tmp/gecko.tar.gz -C /usr/share/wine/gecko && \
-    apt-get update && \
-    apt-get install winetricks -y --fix-missing && \
-    apt-get install zenity -y && \
-    apt-get install ubuntu-restricted-extras -y &&\
-    apt-get install firefox -y && \
     apt-get install python python3 python3.8 python-pip python3-pip -y && \
     python2 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade pip && \
@@ -34,7 +80,7 @@ RUN chown root:root /tmp && \
     python3 -m pip install numpy BeautifulSoup4 requests lxml selenium html5lib apscheduler && \
     python3.8 -m pip install numpy BeautifulSoup4 lxml selenium html5lib \
     emoji==0.5.4 httpx==0.12.1 feedparser==5.2.1 nonebot==1.5.0 requests==2.21.0 googletrans==2.4.0 apscheduler==3.6.3 pyquery==1.4.1 ujson==3.2.0 msgpack==1.0.0 && \
-    apt-get install iftop && \
+    apt-get install iftop -y && \
     apt-get install build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1 -y && \
     wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
     tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 -C /usr/local/share/ && \
@@ -110,7 +156,7 @@ RUN chown root:root /tmp && \
     dpkg -i mediainfo-gui_20.03-1_amd64.xUbuntu_18.04.deb && \
     apt --fix-broken install -y && \
     apt-get install vim nano -y && \
-    sudo apt-get install p7zip-full -y && \
+    apt-get install p7zip-full -y && \
     apt-get install whiptail im-config libapt-pkg-perl -y && \
     apt-get install fcitx -y && \
     apt-get install dbus -y && \
@@ -129,40 +175,67 @@ RUN chown root:root /tmp && \
     wget -O mongodb-linux-x86_64-ubuntu1804-4.2.9.tar https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1804-4.2.9.tgz && \
     tar -zxvf mongodb-linux-x86_64-ubuntu1804-4.2.9.tar && \
     cd mongodb-linux-x86_64-ubuntu1804-4.2.9 && \
-    sudo cp ./bin/* /usr/local/bin/ && \
-    sudo mkdir -p /var/lib/mongo && \
-    sudo mkdir -p /var/log/mongodb && \
-    sudo chown 777 /var/lib/mongo && \
-    sudo chown 777 /var/log/mongodb && \
+    cp ./bin/* /usr/local/bin/ && \
+    mkdir -p /var/lib/mongo && \
+    mkdir -p /var/log/mongodb && \
+    chown 777 /var/lib/mongo && \
+    chown 777 /var/log/mongodb && \
+    chmod 777 /home/headless/.dbshell && \
+    chmod 777 /home/headless/.mongorc.js && \
+    mkdir /usr/share/fonts/truetype/myfonts && \
+    mv /tmp/* /usr/share/fonts/truetype/myfonts/ && \
+    mkfontscale && \
+    mkfontdir && \
+    fc-cache -fv && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists
+    rm -rf /var/lib/apt/lists /tmp/* /etc/wgetrc    
 
-RUN chsh -s /bin/bash user && \
-    su user -c 'WINEARCH=win32 /usr/bin/wine wineboot' && \
-    su user -c '/usr/bin/wine regedit.exe /s /tmp/coolq.reg' && \
-    su user -c 'wineboot' && \
-    echo 'quiet=on' > /etc/wgetrc && \
-    su user -c '/usr/local/bin/winetricks -q win7' && \
-    su user -c '/usr/local/bin/winetricks -q /tmp/winhttp_2ksp4.verb' && \
-    su user -c '/usr/local/bin/winetricks -q msscript' && \
-    su user -c '/usr/local/bin/winetricks -q fontsmooth=rgb' && \
-    mkdir -p /home/user/.wine/drive_c/windows/Fonts && \
-    unzip /tmp/simsun.zip -d /home/user/.wine/drive_c/windows/Fonts && \
-    mkdir -p /home/user/.fonts/ && \
-    ln -s /home/user/.wine/drive_c/windows/Fonts/simsun.ttc /home/user/.fonts/ && \
-    chown -R user:user /home/user && \
-    mkdir /usr/share/fonts/truetype/myfonts && \
-    mv /tmp/myfonts/* /usr/share/fonts/truetype/myfonts/ && \
-    su user -c 'mkfontscale' && \
-    su user -c 'mkfontdir' && \
-    su user -c 'fc-cache -fv' && \
-    mkdir /home/user/coolq && \
-    rm -rf /home/user/.cache/winetricks /tmp/* /etc/wgetrc
+### 'sync' mitigates automated build failures
+RUN chmod +x \
+        ./create_user_and_fix_permissions.sh \
+    && sync \
+    && ./create_user_and_fix_permissions.sh $STARTUPDIR $HOME \
+    && rm ./create_user_and_fix_permissions.sh
 
-ENV LANG=zh_CN.UTF-8 \
-    LC_ALL=zh_CN.UTF-8 \
-    TZ=Asia/Shanghai \
-    COOLQ_URL=""
+FROM stage-config as stage-final
 
-VOLUME ["/home/user/coolq"]
+### Arguments can be provided during build
+ARG ARG_REFRESHED_AT
+ARG ARG_VCS_REF
+ARG ARG_VERSION_STICKER
+ARG ARG_VNC_BLACKLIST_THRESHOLD
+ARG ARG_VNC_BLACKLIST_TIMEOUT
+ARG ARG_VNC_RESOLUTION
+
+LABEL \
+    any.accetto.description="Headless Ubuntu VNC/noVNC container with Xfce desktop and Firefox" \
+    any.accetto.display-name="Headless Ubuntu/Xfce VNC/noVNC container with Firefox" \
+    any.accetto.tags="ubuntu, xfce, vnc, novnc, firefox" \
+    version-sticker="${ARG_VERSION_STICKER}" \
+    org.label-schema.vcs-ref="${ARG_VCS_REF}" \
+    org.label-schema.vcs-url="https://github.com/accetto/ubuntu-vnc-xfce-firefox"
+
+ENV \
+  REFRESHED_AT=${ARG_REFRESHED_AT} \
+  VERSION_STICKER=${ARG_VERSION_STICKER} \
+  VNC_BLACKLIST_THRESHOLD=${ARG_VNC_BLACKLIST_THRESHOLD:-20} \
+  VNC_BLACKLIST_TIMEOUT=${ARG_VNC_BLACKLIST_TIMEOUT:-0} \
+  VNC_RESOLUTION=${ARG_VNC_RESOLUTION:-1360x768}
+
+### Preconfigure Xfce
+COPY [ "./src/home/Desktop", "./Desktop/" ]
+COPY [ "./src/home/config/xfce4/panel", "./.config/xfce4/panel/" ]
+COPY [ "./src/home/config/xfce4/xfconf/xfce-perchannel-xml", "./.config/xfce4/xfconf/xfce-perchannel-xml/" ]
+COPY [ "./src/startup/version_sticker.sh", "${STARTUPDIR}/" ]
+
+### Fix permissions
+RUN \
+    chmod a+wx "${STARTUPDIR}"/version_sticker.sh \
+    && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}"
+
+### Switch to non-root user
+USER ${VNC_USER}
+
+### Issue #7 (base): Mitigating problems with foreground mode
+WORKDIR ${STARTUPDIR}
