@@ -34,8 +34,11 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 * docker logs coolq_dotnet47 #日志
 * docker exec -it -u 0 coolq_dotnet47 /bin/bash #以root权限进入容器内部
 ### mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork #必须输入这个，因为mongo数据库不会自己启动
+* mongo 
+* exit
+* chmod 777 /home/headless/.mongorc.js
+* chmod 777 /home/headless/.dbshell
 * ffmpeg
-* mongo
 
 * docker container ls -a #列出所有容器
 * docker container ls #列出运行中的容器
