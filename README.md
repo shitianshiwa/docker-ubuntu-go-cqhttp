@@ -1,5 +1,9 @@
 # docker-wine-go-cqhttp
 
+# 改使用 
+# https://hub.docker.com/r/accetto/ubuntu-vnc-xfce-firefox-default
+# https://github.com/accetto/ubuntu-vnc-xfce-firefox
+
 coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 
 ## 使用Dockerfile生成的docker镜像
