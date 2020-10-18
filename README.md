@@ -60,6 +60,7 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 ### 让外界ip无法访问VNC控制台,仅服务器自己的ip可以访问。重启的docker容器后会重置为外界可以访问
 * iptables -t nat -L -n
 * iptables -t nat  -D DOCKER  2
+* iptables -t nat  -D DOCKER  2
 * iptables -t nat -L -n
 
 ## 运行
