@@ -70,6 +70,7 @@ COPY ["./src/tmp", "./"]
 RUN chown root:root /tmp && \
     chmod 1777 /tmp && \
     apt-get update && \
+    apt-get install -y wget software-properties-common apt-transport-https apt-utils && \
     apt-get install -y \
         cabextract unzip python-numpy \
         language-pack-zh-hans tzdata fontconfig && \
