@@ -180,8 +180,9 @@ RUN chown root:root /tmp && \
     mkdir -p /var/log/mongodb && \
     chown 777 /var/lib/mongo && \
     chown 777 /var/log/mongodb && \
-    chmod 777 /home/headless/.dbshell && \
-    chmod 777 /home/headless/.mongorc.js && \
+    #mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork && \
+    #chmod 777 /home/headless/.mongorc.js && \
+    #chmod 777 /home/headless/.dbshell && \
     mkdir /usr/share/fonts/truetype/myfonts && \
     mv /tmp/* /usr/share/fonts/truetype/myfonts/ && \
     mkfontscale && \
