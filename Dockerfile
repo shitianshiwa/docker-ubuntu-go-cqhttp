@@ -181,18 +181,18 @@ RUN chown root:root /tmp && \
     mkdir -p /var/log/mongodb && \
     chown 777 /var/lib/mongo && \
     chown 777 /var/log/mongodb && \
-    mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork && \
-    #mongo & exit && \
-    #chmod 777 /home/headless/.mongorc.js && \
-    #chmod 777 /home/headless/.dbshell && \
+    # mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork && \
+    # mongo | exit && \
+    # chmod 777 /home/headless/.mongorc.js && \
+    # chmod 777 /home/headless/.dbshell && \
     #Google Noto Color Emoji
-    apt install fonts-noto-color-emoji && \
+    apt install fonts-noto-color-emoji -y && \
     #Symbola font
-    apt-get install ttf-ancient-fonts && \
+    apt-get install ttf-ancient-fonts  -y && \
     #Twitter emoji
-    apt-add-repository ppa:eosrei/fonts && \
+    apt-add-repository ppa:eosrei/fonts  -y && \
     apt-get update && \
-    apt-get install fonts-twemoji-svginot && \
+    apt-get install fonts-twemoji-svginot  -y && \
     mkdir /usr/share/fonts/truetype/myfonts && \
     mv /tmp/* /usr/share/fonts/truetype/myfonts/ && \
     mkfontscale && \
@@ -232,7 +232,10 @@ ENV \
   VERSION_STICKER=${ARG_VERSION_STICKER} \
   VNC_BLACKLIST_THRESHOLD=${ARG_VNC_BLACKLIST_THRESHOLD:-20} \
   VNC_BLACKLIST_TIMEOUT=${ARG_VNC_BLACKLIST_TIMEOUT:-0} \
-  VNC_RESOLUTION=${ARG_VNC_RESOLUTION:-1360x768}
+  VNC_RESOLUTION=${ARG_VNC_RESOLUTION:-1360x768}\
+  LANG=zh_CN.UTF-8 \
+  LC_ALL=zh_CN.UTF-8 \
+  TZ=Asia/Shanghai
 
 ### Preconfigure Xfce
 COPY [ "./src/home/Desktop", "./Desktop/" ]
