@@ -1,14 +1,12 @@
-# ./hooks/build latest
-# ./hooks/test latest
 # ./hooks/build dev
 # ./hooks/test dev
 
-### Build and test 'dev' tag locally like
+### Example: Build and test 'dev' tag locally like
 ### ./hooks/build dev
 ### ./hooks/test dev
 ### or with additional arguments
-### ./hooks/build dev 
-### ./hooks/test dev --no-cache
+### ./hooks/build dev --no-cache
+### ./hooks/test dev
 ### or using the utility
 ### ./utils/util-hdx.sh Dockerfile 3
 ### ./utils/util-hdx.sh Dockerfile 4
@@ -24,29 +22,18 @@ FROM accetto/ubuntu-vnc-xfce:${BASETAG} as stage-install
 USER 0
 
 ### 'apt-get clean' runs automatically
-RUN apt-get update && apt-get install -y \
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         firefox \
     && rm -rf /var/lib/apt/lists/*
 
-### Mitigating issue #3 (Firefox 77.0.1 scrambles pages) - rollback to version 76.0.1
 ### Alternatively install an explicit Firefox version
 ### http://releases.mozilla.org/pub/firefox/releases/67.0.4/linux-x86_64/en-US/firefox-67.0.4.tar.bz2
-# ENV \
-#     FIREFOX_VERSION=76.0.1 \
-#     FIREFOX_DISTRO=linux-x86_64 \
-#     FIREFOX_PATH=/usr/lib/firefox
-# RUN mkdir -p ${FIREFOX_PATH} \
-#     && wget -qO- http://releases.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/${FIREFOX_DISTRO}/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 \
-#         | tar xvj -C /usr/lib/ \
-#     && ln -s ${FIREFOX_PATH}/firefox /usr/bin/firefox
-
-### Alternatively install an explicit Firefox version
-### http://releases.mozilla.org/pub/firefox/releases/67.0.4/linux-x86_64/en-US/firefox-67.0.4.tar.bz2
-# ENV \
+# RUN \
 #     FIREFOX_VERSION=67.0.4 \
 #     FIREFOX_DISTRO=linux-x86_64 \
-#     FIREFOX_PATH=/usr/lib/firefox
-# RUN mkdir -p ${FIREFOX_PATH} \
+#     FIREFOX_PATH=/usr/lib/firefox \
+#     && mkdir -p ${FIREFOX_PATH} \
 #     && wget -qO- http://releases.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/${FIREFOX_DISTRO}/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 \
 #         | tar xvj -C /usr/lib/ \
 #     && ln -s ${FIREFOX_PATH}/firefox /usr/bin/firefox

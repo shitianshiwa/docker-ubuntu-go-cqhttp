@@ -8,6 +8,39 @@
 
 ***
 
+### Release 21.03
+
+- Firefox **86.0**
+
+### Release 21.02.1
+
+- Firefox **85.0.1**
+
+### Release 21.02
+
+- Firefox **85.0**
+
+### Release 21.01.1
+
+- Firefox **84.0.2**
+
+### Release 21.01
+
+- Firefox **84.0.1**
+
+### Release 20.12
+
+- README got links to the third generation (G3) of images
+- Firefox **84.0**
+
+### Release 20.11
+
+- Firefox **83.0**
+
+### Release 20.10.2
+
+- Firefox **82.0**
+
 ### Release 20.10.1
 
 - hook scripts updated
