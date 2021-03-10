@@ -27,6 +27,11 @@ coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
 * docker save -o ~/coolq_dotnet47-backup.tar coolq_dotnet47-backup #生成本地镜像备份文件
 * docker load -i ~/coolq_dotnet47-backup.tar #读取路径中的镜像备份文件
 
+## 一键清理docker容器和镜像（小心误清理其它镜像和容器！！！）
+* docker stop $(docker ps -a -q)
+* docker rm $(docker ps -a -q)
+* docker rmi -f $(docker images | grep "^<none>" | awk "{print $3}")
+
 ## 常用使用命令
 * docker start coolq_dotnet47 #开启
 * docker stop coolq_dotnet47 #关闭
@@ -229,5 +234,11 @@ https://blog.csdn.net/weixin_39198406/article/details/79267687
 ### 防火墙
 - ubuntu 默认防火墙安装、启用、查看状态 - VincentZhu - 博客园
 - https://www.cnblogs.com/OnlyDreams/p/7210914.html
+
+
+解决 /bin/bash^M: bad interpreter: No such file or directory 问题
+apt-get install dos2unix
+dos2unix create_user_and_fix_permissions.sh
+https://www.itbulu.com/dos2unix.html
 
 待补充。。。
