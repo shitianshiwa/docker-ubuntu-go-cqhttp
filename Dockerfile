@@ -70,40 +70,53 @@ RUN chown root:root /tmp && \
     emoji==0.5.4 httpx==0.12.1 feedparser==5.2.1 nonebot==1.5.0 requests==2.21.0 googletrans==2.4.0 apscheduler==3.6.3 pyquery==1.4.1 ujson==3.2.0 msgpack==1.0.0 && \
     apt-get install iftop -y && \
     apt-get install build-essential chrpath libssl-dev libxft-dev libfreetype6-dev libfreetype6 libfontconfig1-dev libfontconfig1 -y && \
-    wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
+    #wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
     tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 -C /usr/local/share/ && \
     ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/ && \
-    apt-get install nodejs npm -y && \
-    npm install -g n && \
-    n stable && \
-    npm i -g npm n && \
+    rm -rf phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
+    #apt-get install nodejs npm -y && \
+    wget https://nodejs.org/dist/latest-v14.x/node-v14.16.0-linux-x64.tar.xz && \
+    tar xf  node-v14.16.0-linux-x64.tar.xz  -C /usr/local/share/ && \
+    #cd node-v14.16.0-linux-x64/ && \
+    /usr/local/share/node-v14.16.0-linux-x64/bin/node -v && \ 
+    ln -s /usr/local/share/node-v14.16.0-linux-x64/bin/npm   /usr/local/bin/ && \
+    ln -s /usr/local/share/node-v14.16.0-linux-x64/bin/node  /usr/local/bin/ && \
+    ln -s /usr/local/share/node-v14.16.0-linux-x64/bin/npx   /usr/local/bin/ && \
+    npm i -g n && \
+    ln -s /usr/local/share/node-v14.16.0-linux-x64/bin/n   /usr/local/bin/ && \
+    node -v && \
+    npm -v && \
+    npx -v && \
+    n --version && \
+    #n stable && \
     apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev \
     libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev \
     libxcb-xfixes0-dev pkg-config texinfo zlib1g-dev && \
     apt-get install -y yasm libx264-dev cmake mercurial libfdk-aac-dev libmp3lame-dev nasm libopus-dev libvpx-dev && \
     apt-get install git automake autoconf pkg-config make g++ libtool zlib1g-dev libmms0 libwxbase3.0-0v5 libwxgtk3.0-0v5 -y && \
-    wget http://www.penguin.cz/~utx/ftp/amr/amrnb-11.0.0.0.tar.bz2 && \
+    #wget http://www.penguin.cz/~utx/ftp/amr/amrnb-11.0.0.0.tar.bz2 && \
     tar xvjf amrnb-11.0.0.0.tar.bz2 && \
+    rm -rf amrnb-11.0.0.0.tar.bz2 && \
     cd amrnb-11.0.0.0 && \
     ./configure && \
-    make -j4 && make install && cd ../ && \
-    wget http://www.penguin.cz/~utx/ftp/amr/amrwb-11.0.0.0.tar.bz2 && \
+    make -j8 && make install && cd ../ && \
+    #wget http://www.penguin.cz/~utx/ftp/amr/amrwb-11.0.0.0.tar.bz2 && \
     tar xvjf amrwb-11.0.0.0.tar.bz2 && \
     cd amrwb-11.0.0.0 && \
     ./configure && \
-    make -j4 && make install && cd ../ && \
-    wget https://jaist.dl.sourceforge.net/project/opencore-amr/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz && \
+    make -j8 && make install && cd ../ && \
+    #wget https://jaist.dl.sourceforge.net/project/opencore-amr/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz && \
     tar -xzvf vo-amrwbenc-0.1.3.tar.gz && \
     cd vo-amrwbenc-0.1.3 && \
     ./configure && \
-    make -j4 && make install && cd ../ && \
-    wget https://jaist.dl.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.5.tar.gz && \
+    make -j8 && make install && cd ../ && \
+    #wget https://jaist.dl.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.5.tar.gz && \
     chmod 755 opencore-amr-0.1.5.tar.gz && \
     tar -xzvf opencore-amr-0.1.5.tar.gz && \
     cd opencore-amr-0.1.5 && \
     ./configure && \
-    make -j4 && make install && cd ../ && \
-    wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:4.2.4-1ubuntu0.1/ffmpeg_4.2.4.orig.tar.xz && \
+    make -j8 && make install && cd ../ && \
+    #wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:4.2.4-1ubuntu0.1/ffmpeg_4.2.4.orig.tar.xz && \
     chmod 755 ffmpeg_4.2.4.orig.tar.xz && \
     xz -d ffmpeg_4.2.4.orig.tar.xz && \
     tar -xvf ffmpeg_4.2.4.orig.tar && \
@@ -131,16 +144,16 @@ RUN chown root:root /tmp && \
         --enable-openssl \
         --enable-libopencore-amrnb \
         --enable-libopencore-amrwb && \
-    make -j4 && make install && cd ../ && \
+    make -j8 && make install && cd ../ && \
     apt-get install graphicsmagick -y && \
     npm install gify && \
-    wget https://mediaarea.net/download/binary/libzen0/0.4.38/libzen0v5_0.4.38-1_amd64.xUbuntu_18.04.deb && \
+    #wget https://mediaarea.net/download/binary/libzen0/0.4.38/libzen0v5_0.4.38-1_amd64.xUbuntu_18.04.deb && \
     dpkg -i libzen0v5_0.4.38-1_amd64.xUbuntu_18.04.deb && \
-    wget https://mediaarea.net/download/binary/libmediainfo0/20.03/libmediainfo0v5_20.03-1_amd64.xUbuntu_18.04.deb && \
+    #wget https://mediaarea.net/download/binary/libmediainfo0/20.03/libmediainfo0v5_20.03-1_amd64.xUbuntu_18.04.deb && \
     dpkg -i libmediainfo0v5_20.03-1_amd64.xUbuntu_18.04.deb && \
-    wget https://mediaarea.net/download/binary/mediainfo/20.03/mediainfo_20.03-1_amd64.xUbuntu_18.04.deb && \
+    #wget https://mediaarea.net/download/binary/mediainfo/20.03/mediainfo_20.03-1_amd64.xUbuntu_18.04.deb && \
     dpkg -i mediainfo_20.03-1_amd64.xUbuntu_18.04.deb && \
-    wget https://mediaarea.net/download/binary/mediainfo-gui/20.03/mediainfo-gui_20.03-1_amd64.xUbuntu_18.04.deb && \
+    #wget https://mediaarea.net/download/binary/mediainfo-gui/20.03/mediainfo-gui_20.03-1_amd64.xUbuntu_18.04.deb && \
     dpkg -i mediainfo-gui_20.03-1_amd64.xUbuntu_18.04.deb && \
     apt --fix-broken install -y && \
     apt-get install vim nano -y && \
