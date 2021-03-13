@@ -192,6 +192,7 @@ RUN chown root:root /tmp && \
     #Twitter emoji
     apt-add-repository ppa:eosrei/fonts  -y && \
     apt-get update && \
+    apt-get install fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming  -y && \
     apt-get install fonts-twemoji-svginot  -y && \
     mkdir /usr/share/fonts/truetype/myfonts && \
     mv /tmp/* /usr/share/fonts/truetype/myfonts/ && \
