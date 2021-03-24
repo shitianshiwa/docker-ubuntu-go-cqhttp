@@ -1,356 +1,244 @@
-# Headless Ubuntu/Xfce container with VNC/noVNC and Firefox
-
-## accetto/ubuntu-vnc-xfce-firefox-default
-
-[Docker Hub][this-docker] - [Git Hub][this-github] - [Changelog][this-changelog] - [Wiki][this-wiki]
-
-***
-
-![badge-docker-pulls][badge-docker-pulls]
-![badge-docker-stars][badge-docker-stars]
-![badge-github-release][badge-github-release]
-![badge-github-release-date][badge-github-release-date]
-![badge-github-stars][badge-github-stars]
-![badge-github-forks][badge-github-forks]
-![badge-github-open-issues][badge-github-open-issues]
-![badge-github-closed-issues][badge-github-closed-issues]
-![badge-github-releases][badge-github-releases]
-![badge-github-commits][badge-github-commits]
-![badge-github-last-commit][badge-github-last-commit]
-
-**Tip** If you want newer images based on [Ubuntu 20.04 LTS][docker-ubuntu] with the latest [TigerVNC][tigervnc-releases]/[noVNC][novnc-releases] versions, please check the **third generation** (G3) [accetto/ubuntu-vnc-xfce-g3][accetto-docker-ubuntu-vnc-xfce-g3], [accetto/ubuntu-vnc-xfce-chromium-g3][accetto-docker-ubuntu-vnc-xfce-chromium-g3] or [accetto/ubuntu-vnc-xfce-firefox-g3][accetto-docker-ubuntu-vnc-xfce-firefox-g3].
-
-**Tip** Unless you need [nss_wrapper][nsswrapper], you can also use my newer image [accetto/xubuntu-vnc-novnc-firefox:default][accetto-docker-xubuntu-vnc-novnc-firefox:default], which is a streamlined version of this image ([image hierarchy][accetto-xubuntu-vnc-novnc-wiki-image-hierarchy]). If you also don't need [noVNC][novnc], you can use even a slimmer image [accetto/xubuntu-vnc-firefox:default][accetto-docker-xubuntu-vnc-firefox:default], which is a member of another growing family of application images ([image hierarchy][accetto-xubuntu-vnc-wiki-image-hierarchy]). The newer images include also **sudo** command.
-
-***
-
-**WARNING** about images with Firefox
-
-Starting from the release **20.10.1**, there is no single-process Firefox image and the multi-process mode is always enabled. Be aware, that multi-process requires larger shared memory (`/dev/shm`). At least 256MB is recommended. Please check the [Firefox multi-process][that-wiki-firefox-multiprocess] page in Wiki for more information and the instructions, how to set the shared memory size in different scenarios.
-
-***
-
-**Attention:** Resources for building images with configurable Firefox, previously contained in the common base repository [ubuntu-vnc-xfce][accetto-github-ubuntu-vnc-xfce], have been moved to its own GitHub repository [ubuntu-vnc-xfce-firefox-plus][accetto-github-ubuntu-vnc-xfce-firefox-plus]. Resources for building the base images are in the GitHub repository [accetto/ubuntu-vnc-xfce][accetto-github-ubuntu-vnc-xfce].
-
-**Attention:** The Docker Hub repository is actually named [*ubuntu-vnc-xfce-firefox*-**default**][this-docker] to avoid conflicts with the previous generation image.
-
-**This repository** contains resources for building a Docker image based on [Ubuntu][docker-ubuntu] with [Xfce][xfce] desktop environment, **VNC**/[noVNC][novnc] servers for headless use and the current [Firefox][firefox] web browser in its default installation.
-
-The image can be successfully built and used on Linux, Windows, Mac and NAS devices. It has been tested with [Docker Desktop][docker-desktop] on [Ubuntu flavours][ubuntu-flavours], [Windows 10][docker-for-windows] and [Container Station][container-station] from [QNAP][qnap].
-
-Containers created from this image make perfect light-weight web browsers. They can be thrown away easily and replaced quickly, improving browsing privacy. They run under a non-root user by default, improving browsing security.
-
-Running in background is the primary scenario for the containers, but using them interactively in foreground is also possible. For examples see the description below or the [HOWTO][this-wiki-howto] section in [Wiki][this-wiki].
-
-The image is based on the [accetto/ubuntu-vnc-xfce][accetto-docker-ubuntu-vnc-xfce] image, just adding the [Firefox][firefox] browser in its default installation.
-
-The image inherits the following components from its [base image][accetto-docker-ubuntu-vnc-xfce]:
-
-- utilities **ping**, **wget**, **zip**, **unzip**, **sudo**, [curl][curl], [git][git] (Ubuntu distribution)
-- current version of JSON processor [jq][jq]
-- light-weight [Xfce][xfce] desktop environment (Ubuntu distribution)
-- current version of high-performance [TigerVNC][tigervnc] server and client
-- current version of [noVNC][novnc] HTML5 clients (full and lite) (TCP port **6901**)
-- popular text editors [vim][vim] and [nano][nano] (Ubuntu distribution)
-- lite but advanced graphical editor [mousepad][mousepad] (Ubuntu distribution)
-- support of **version sticker** (see below)
-
-The image is regularly maintained and rebuilt. The history of notable changes is documented in [CHANGELOG][this-changelog].
-
-![screenshot-container][screenshot-container]
-
-## Image set
-
-- [accetto/ubuntu-vnc-xfce-firefox-default][this-docker]
-
-  - `latest` based on `accetto/ubuntu-vnc-xfce:latest` and the Firefox multiprocess is **enabled** (see below)
-
-    ![badge-VERSION_STICKER_LATEST][badge-VERSION_STICKER_LATEST]
-    ![badge-github-commit-latest][badge-github-commit-latest]
-
-### Ports
-
-Following **TCP** ports are exposed:
-
-- **5901** used for access over **VNC**
-- **6901** used for access over [noVNC][novnc]
-
-The default **VNC user** password is **headless**.
-
-### Volumes
-
-The containers do not create or use any external volumes by default. However, the following folders make good mounting points:
-
-- /home/headless/Documents/
-- /home/headless/Downloads/
-- /home/headless/Music/
-- /home/headless/Pictures/
-- /home/headless/Public/
-- /home/headless/Templates/
-- /home/headless/Videos/
-
-The following mounting point is specific to Firefox:
-
-- /home/headless/.mozilla
-
-Both *named volumes* and *bind mounts* can be used. More about volumes can be found in [Docker documentation][docker-doc] (e.g. [Manage data in Docker][docker-doc-managing-data]).
-
-### Version sticker
-
-Version sticker serves multiple purposes that are closer described in [Wiki][this-wiki]. The **version sticker value** identifies the version of the docker image and it is persisted in it when it is built. It is also shown as a badge in the README file.
-
-However, the script `version_sticker.sh` can be used anytime for convenient checking of the current versions of installed applications.
-
-The script is deployed into the startup folder, which is defined by the environment variable `STARTUPDIR` with the default value of `/dockerstartup`.
-
-If the script is executed inside a container without an argument, then it returns the **current version sticker value** of the container. This value is newly calculated and it is based on the current versions of the essential applications in the container.
-
-The **current** version sticker value will differ from the **persisted** value, if any of the included application has been updated to another version.
-
-If the script is called with the argument `-v` (lower case `v`), then it prints out verbose versions of the essential applications that are included in the **version sticker value**.
-
-If it is called with the argument `-V` (upper case `v`), then it prints out verbose versions of some more applications.
-
-Examples can be found in [Wiki][this-wiki].
-
-## Firefox multi-process
-
-Firefox multi-process (also known as **Electrolysis** or just **E10S**) can cause heavy crashing in Docker containers if there is not enough shared memory (**Gah. Your tab just crashed.**).
-
-In Firefox versions till **76.0.1** it has been possible to disable multi-process by setting the environment variable **MOZ_FORCE_DISABLE_E10S**. However, in Firefox **77.0.1** it has caused ugly scrambling of almost all web pages, because they were not decompressed.
-
-Mozilla has fixed the problem in the next release, but they warned about not supporting the switch in future. That is why I've decided, that the mainstream image tagged as `latest` will use multi-process by default, even if it requires larger shared memory. On the positive side, performance should be higher and Internet browsing should be sand-boxed.
-
-For some time I've maintained also `singleprocess` images intended for scenarios, where increasing the shared memory size is not possible or not wanted. However, by Firefox **81.0** I've noticed, that the environment variable **MOZ_FORCE_DISABLE_E10S** has no effect any more. Since then all images run Firefox in multi-process mode.
-
-Please check the Wiki page [Firefox multi-process][that-wiki-firefox-multiprocess] for more information and the instructions, how the shared memory size can be set in different scenarios.
-
-### Setting shared memory size
-
-Instability of multi-process Firefox is caused by setting the shared memory size too low. Docker assigns only **64MB** by default. Testing on my computers has shown, that using at least **256MB** completely eliminates the problem. However, it could be different on your system.
-
-The Wiki page [Firefox multi-process][that-wiki-firefox-multiprocess] describes several ways, how to increase the shared memory size. It's really simple, if you need it for a single container started from the command line.
-
-For example, the following container will have its shared memory size set to 256MB:
-
-```bash
-docker run -d -P --shm-size=256m accetto/xubuntu-vnc-xfce-firefox-default
-```
-
-You can check the current shared memory size by executing the following command inside the container:
-
-```bash
-df -h /dev/shm
-```
-
-## Running containers in background (detached)
-
-Created containers will run under the non-root user **headless:headless** by default.
-
-The following container will listen on automatically selected **TCP** ports of the host computer:
-
-```docker
-docker run -d -P accetto/ubuntu-vnc-xfce-firefox-default
-```
-
-The following container will listen on the host's explicit **TCP** ports **25901** (VNC) and **26901** (noVNC):
-
-```docker
-docker run -d -p 25901:5901 -p 26901:6901 accetto/ubuntu-vnc-xfce-firefox-default
-```
-
-The following container wil create or re-use the local named volume **my\_Downloads** mounted as `/home/headless/Downloads`. The container will be accessible through the same **TCP** ports as the one above:
-
-```docker
-docker run -d -P -v my_Downloads:/home/headless/Downloads accetto/ubuntu-vnc-xfce-firefox-default
-```
-
-or using the newer syntax with **--mount** flag:
-
-```docker
-docker run -d -P --mount source=my_Downloads,target=/home/headless/Downloads accetto/ubuntu-vnc-xfce-firefox-default
-```
-
-More usage examples can be found in [Wiki][this-wiki] (section [HOWTO][this-wiki-howto]).
-
-## Running containers in foreground (interactively)
-
-The image supports the following container start-up options: `--wait` (default), `--skip`, `--debug` (also `--tail-log`) and `--help`. This functionality is inherited from the [base image][accetto-docker-ubuntu-vnc-xfce].
-
-The following container will print out the help and then it'll remove itself:
-
-```docker
-docker run --rm accetto/ubuntu-vnc-xfce-firefox-default --help
-```
-
-Excerpt from the output, which describes the other options:
-
-```docker
-OPTIONS:
--w, --wait      (default) Keeps the UI and the vnc server up until SIGINT or SIGTERM are received.
-                An optional command can be executed after the vnc starts up.
-                example: docker run -d -P accetto/ubuntu-vnc-xfce
-                example: docker run -it -P --rm accetto/ubuntu-vnc-xfce bash
-
--s, --skip      Skips the vnc startup and just executes the provided command.
-                example: docker run -it -P --rm accetto/ubuntu-vnc-xfce --skip echo $BASH_VERSION
-
--d, --debug     Executes the vnc startup and tails the vnc/noVNC logs.
-                Any parameters after '--debug' are ignored. CTRL-C stops the container.
-                example: docker run -it -P --rm accetto/ubuntu-vnc-xfce --debug
-
--t, --tail-log  same as '--debug'
-
--h, --help      Prints out this help.
-                example: docker run --rm accetto/ubuntu-vnc-xfce
-```
-
-It should be noticed, that the `--debug` start-up option does not show the command prompt even if the `-it` run arguments are provided. This is because the container is watching the incoming vnc/noVNC connections and prints out their logs in real time. However, it is easy to attach to the running container like in the following example.
-
-In the first terminal window on the host computer, create a new container named **foo**:
-
-```docker
-docker run --name foo accetto/ubuntu-vnc-xfce-firefox-default --debug
-```
-
-In the second terminal window on the host computer, execute the shell inside the **foo** container:
-
-```docker
-docker exec -it foo /bin/bash
-```
-
-## Using headless containers
-
-There are two ways, how to use the created headless containers. Note that the default **VNC user** password is **headless**.
-
-### Over VNC
-
-To be able to use the containers over **VNC**, a **VNC Viewer** is needed (e.g. [TigerVNC][tigervnc] or [TightVNC][tightvnc]).
-
-The VNC Viewer should connect to the host running the container, pointing to the host's TCP port mapped to the container's TCP port **5901**.
-
-For example, if the container has been created on the host called `mynas` using the parameters described above, the VNC Viewer should connect to `mynas:25901`.
-
-### Over noVNC
-
-To be able to use the containers over [noVNC][novnc], an HTML5 capable web browser is needed. It actually means, that any current web browser can be used.
-
-The browser should navigate to the host running the container, pointing to the host's TCP port mapped to the container's TCP port **6901**.
-
-However, the containers offer two [noVNC][novnc] clients - **lite** and **full**. The connection URL differs slightly in both cases. To make it easier, a simple startup page is implemented.
-
-If the container have been created on the host called `mynas` using the parameters described above, then the web browser should navigate to `http://mynas:26901`.
-
-The startup page will show two hyperlinks pointing to the both noVNC clients:
-
-- `http://mynas:26901/vnc_lite.html`
-- `http://mynas:26901/vnc.html`
-
-It's also possible to provide the password through the links:
-
-- `http://mynas:26901/vnc_lite.html?password=headless`
-- `http://mynas:26901/vnc.html?password=headless`
-
-## Issues
-
-If you have found a problem or you just have a question, please check the [Issues][this-issues] and the [Troubleshooting][this-wiki-troubleshooting], [FAQ][this-wiki-faq] and [HOWTO][this-wiki-howto] sections in [Wiki][this-wiki] first. Please do not overlook the closed issues.
-
-If you do not find a solution, you can file a new issue. The better you describe the problem, the bigger the chance it'll be solved soon.
-
-## Credits
-
-Credit goes to all the countless people and companies who contribute to open source community and make so many dreamy things real.
-
-***
-
-[this-docker]: https://hub.docker.com/r/accetto/ubuntu-vnc-xfce-firefox-default/
-[this-github]: https://github.com/accetto/ubuntu-vnc-xfce-firefox
-
-[this-changelog]: https://github.com/accetto/ubuntu-vnc-xfce-firefox/blob/master/CHANGELOG.md
-[this-issues]: https://github.com/accetto/ubuntu-vnc-xfce-firefox/issues
-
-[this-wiki]: https://github.com/accetto/ubuntu-vnc-xfce-firefox/wiki
-[this-wiki-howto]: https://github.com/accetto/ubuntu-vnc-xfce-firefox/wiki/How-to
-[this-wiki-troubleshooting]: https://github.com/accetto/ubuntu-vnc-xfce-firefox/wiki/Troubleshooting
-[this-wiki-faq]: https://github.com/accetto/ubuntu-vnc-xfce-firefox/wiki/Frequently-asked-questions
-
-[that-wiki-firefox-multiprocess]: https://github.com/accetto/xubuntu-vnc/wiki/Firefox-multiprocess
-
-[accetto-github]: https://github.com/accetto/
-[accetto-docker]: https://hub.docker.com/u/accetto/
-
-[accetto-github-ubuntu-vnc-xfce]: https://github.com/accetto/ubuntu-vnc-xfce
-[accetto-docker-ubuntu-vnc-xfce]: https://hub.docker.com/r/accetto/ubuntu-vnc-xfce/
-
-[accetto-docker-xubuntu-vnc-firefox:default]:https://hub.docker.com/r/accetto/xubuntu-vnc-firefox/
-[accetto-xubuntu-vnc-wiki-image-hierarchy]: https://github.com/accetto/xubuntu-vnc/wiki/Image-hierarchy
-
-[accetto-docker-ubuntu-vnc-xfce-g3]: https://hub.docker.com/r/accetto/ubuntu-vnc-xfce-g3
-[accetto-docker-ubuntu-vnc-xfce-chromium-g3]: https://hub.docker.com/r/accetto/ubuntu-vnc-xfce-chromium-g3
-[accetto-docker-ubuntu-vnc-xfce-firefox-g3]: https://hub.docker.com/r/accetto/ubuntu-vnc-xfce-firefox-g3
-
-[accetto-docker-xubuntu-vnc-novnc-firefox:default]: https://hub.docker.com/r/accetto/xubuntu-vnc-novnc-firefox/
-[accetto-xubuntu-vnc-novnc-wiki-image-hierarchy]: https://github.com/accetto/xubuntu-vnc-novnc/wiki/Image-hierarchy
-
-[accetto-github-ubuntu-vnc-xfce-firefox-plus]: https://github.com/accetto/ubuntu-vnc-xfce-firefox-plus/
-[accetto-docker-ubuntu-vnc-xfce-firefox-plus]: https://hub.docker.com/r/accetto/ubuntu-vnc-xfce-firefox-plus/
-
-[docker-ubuntu]: https://hub.docker.com/_/ubuntu/
-[docker-doc]: https://docs.docker.com/
-[docker-doc-managing-data]: https://docs.docker.com/storage/
-[docker-for-windows]: https://hub.docker.com/editions/community/docker-ce-desktop-windows
-[docker-desktop]: https://www.docker.com/products/docker-desktop
-
-[qnap]: https://www.qnap.com/en/
-[container-station]: https://www.qnap.com/solution/container_station/en/
-
-[ubuntu-flavours]: https://www.ubuntu.com/download/flavours
-
-[curl]: http://manpages.ubuntu.com/manpages/bionic/man1/curl.1.html
-[firefox]: https://www.mozilla.org
-[git]: https://git-scm.com/
-[jq]: https://stedolan.github.io/jq/
-[mousepad]: https://github.com/codebrainz/mousepad
-[nano]: https://www.nano-editor.org/
-[novnc]: https://github.com/kanaka/noVNC
-[novnc-releases]: https://github.com/novnc/noVNC/releases
-[nsswrapper]: https://cwrap.org/nss_wrapper.html
-[tigervnc]: http://tigervnc.org
-[tigervnc-releases]: https://github.com/TigerVNC/tigervnc/releases
-[tightvnc]: http://www.tightvnc.com
-[vim]: https://www.vim.org/
-[xfce]: http://www.xfce.org
-
-[screenshot-container]: https://raw.githubusercontent.com/accetto/ubuntu-vnc-xfce-firefox/master/ubuntu-vnc-xfce-firefox.jpg
-
-<!-- docker badges -->
-
-[badge-docker-pulls]: https://badgen.net/docker/pulls/accetto/ubuntu-vnc-xfce-firefox-default?icon=docker&label=pulls
-
-[badge-docker-stars]: https://badgen.net/docker/stars/accetto/ubuntu-vnc-xfce-firefox-default?icon=docker&label=stars
-
-<!-- github badges -->
-
-[badge-github-release]: https://badgen.net/github/release/accetto/ubuntu-vnc-xfce-firefox?icon=github&label=release
-
-[badge-github-release-date]: https://img.shields.io/github/release-date/accetto/ubuntu-vnc-xfce-firefox?logo=github
-
-[badge-github-stars]: https://badgen.net/github/stars/accetto/ubuntu-vnc-xfce-firefox?icon=github&label=stars
-
-[badge-github-forks]: https://badgen.net/github/forks/accetto/ubuntu-vnc-xfce-firefox?icon=github&label=forks
-
-[badge-github-releases]: https://badgen.net/github/releases/accetto/ubuntu-vnc-xfce-firefox?icon=github&label=releases
-
-[badge-github-commits]: https://badgen.net/github/commits/accetto/ubuntu-vnc-xfce-firefox?icon=github&label=commits
-
-[badge-github-last-commit]: https://badgen.net/github/last-commit/accetto/ubuntu-vnc-xfce-firefox?icon=github&label=last%20commit
-
-[badge-github-closed-issues]: https://badgen.net/github/closed-issues/accetto/ubuntu-vnc-xfce-firefox?icon=github&label=closed%20issues
-
-[badge-github-open-issues]: https://badgen.net/github/open-issues/accetto/ubuntu-vnc-xfce-firefox?icon=github&label=open%20issues
-
-<!-- latest tag badges -->
-
-[badge-VERSION_STICKER_LATEST]: https://badgen.net/badge/version%20sticker/ubuntu18.04.5-firefox86.0/blue
-
-[badge-github-commit-latest]: https://images.microbadger.com/badges/commit/accetto/ubuntu-vnc-xfce-firefox-default.svg
+# docker-wine-go-cqhttp
+
+# 改使用 
+# https://hub.docker.com/r/accetto/ubuntu-vnc-xfce-firefox-default
+# https://github.com/accetto/ubuntu-vnc-xfce-firefox
+
+coolq已R.I.P,现在改支持go-cqhttp https://github.com/Mrs4s/go-cqhttp/
+
+## 使用Dockerfile生成的docker镜像
+### 安装docker 
+* https://docs.docker.com/get-docker/
+* https://yeasy.gitbook.io/docker_practice/install
+* sudo apt  install docker.io  //安装docker
+
+- 然后检查docker版本：
+* sudo docker version
+
+# 注意无法安装mysql等依赖systemctl的软件
+
+### 生成镜像
+* cd Dockerfile文件所在路径     #跳转到指定路径
+* docker build -t coolq-dotnet47:v1.0 .      #生成镜像，可能需要sstap那样的全局tizi才能顺利生成镜像
+
+
+## 镜像保存重装 
+* docker commit -p 容器ID  coolq_dotnet47-backup #备份容器生成镜像备份
+* docker save -o ~/coolq_dotnet47-backup.tar coolq_dotnet47-backup #生成本地镜像备份文件
+* docker load -i ~/coolq_dotnet47-backup.tar #读取路径中的镜像备份文件
+
+## 一键清理docker容器和镜像（小心误清理其它镜像和容器！！！）
+* docker stop $(docker ps -a -q)
+* docker rm $(docker ps -a -q)
+* docker rmi -f $(docker images | grep "^<none>" | awk "{print $3}")
+
+## 常用使用命令
+* docker start coolq_dotnet47 #开启
+* docker stop coolq_dotnet47 #关闭
+* docker restart coolq_dotnet47 #重启
+* docker logs coolq_dotnet47 #日志
+* docker exec -it -u 0 coolq_dotnet47 /bin/bash #以root权限进入容器内部
+### mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork #必须输入这个，因为mongo数据库不会自己启动
+* mongo 
+* exit
+* chmod 777 /home/headless/.mongorc.js
+* chmod 777 /home/headless/.dbshell
+* ffmpeg
+
+* docker container ls -a #列出所有容器
+* docker container ls #列出运行中的容器
+* docker images #列出镜像列表
+
+* sudo docker exec -ti -u root 容器ID   bash #以root权限从控制台转入容器内部
+* sudo docker exec -ti -u user 容器ID   bash #以user权限从控制台转入容器内部
+* sudo docker exec -it -u 0 coolq_dotnet47 /bin/bash
+
+* docker rm 容器ID //删掉指定容器，需要先停止容器
+* docker rmi 镜像ID  //删掉指定镜像，需要先删除所生成的容器
+* docker stop $(docker ps -a -q) //停止所有的container
+* docker rm $(docker ps -a -q) //删除所有container
+* docker rmi $(docker images | grep "^<none>" | awk "{print $3}")//想要删除untagged images，也就是那些id为<None>的image的话可以用。我也不知道是什么。。！
+* docker rmi $(docker images -q)//要删除全部image的话
+
+ 待补充。。。
+
+### 让外界ip无法访问VNC控制台,仅服务器自己的ip可以访问。重启的docker容器后会重置为外界可以访问
+* iptables -t nat -L -n
+* iptables -t nat  -D DOCKER  2
+* iptables -t nat  -D DOCKER  2
+* iptables -t nat -L -n
+
+## 运行
+
+* mkdir coolq-data-dotnet47  #创建名coolq-data-dotnet47的文件夹
+* docker run --name=coolq_dotnet47 -d -p 8080:9000 -v /root/coolq-data-dotnet47:/home/user/coolq -e COOLQ_URL= -e VNC_PASSWD=密码 -e COOLQ_ACCOUNT=QQ号 coolq-dotnet47:v1.0
+#运行docker镜像
+
+* 即可运行一个 docker-wine-go-cqhttp 实例。运行后，访问 `http://你的IP:9000` 可以打开一个 VNC 页面，输入密码登陆
+
+* 数据文件会保存在容器内的 `/home/user/coolq` 文件夹下，映射到主机上则为上述命令第二步创建的文件夹。调整 `-v` 的参数可以改变主机映射的路径。
+
+
+## 环境变量
+
+在创建 docker 容器时，使用以下环境变量，可以调整容器行为。
+
+* **`VNC_PASSWD`** 设置 VNC 密码。注意该密码不能超过 8 个字符。
+* **`COOLQ_ACCOUNT`** 设置要登录 酷Q 的帐号。在第一次手动登录后，你可以勾选“快速登录”功能以启用自动登录，此后， docker 容器启动或 酷Q 异常退出时，便会自动为你登录该帐号。
+* **`COOLQ_URL`** 设置下载 酷Q 的地址，默认为 `http://dlsec.cqp.me/cqa-tuling`，即 酷Q Air 图灵版。请确保下载后的文件能解压出 `酷Q Air/CQA.exe` 或 `酷Q Pro/CQP.exe`
+
+## 提示1
+* 修复了winetricks打不开窗口的bug
+* 增加火狐浏览器,python2、3、3.8的pip工具，nodejs
+* fcitx是输入法(默认有安装，试一试ctrl+空格？ctrl要用vnc控制台提供的按键)
+* im-config(im-switch) 是设置输入法 
+* 增加vim，nano，meidainfo，ffmpeg，graphicsmagick，iftop，mongo数据库模块 
+
+### 输入法我不知道怎样才能保证可以正常启动。。！9成以上概率启动不了
+#### 删除现有的
+* apt purge fcitx fcitx-ui-classic fcitx-table-wbpy fcitx-pinyin fcitx-sunpinyin fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-table* -y
+* apt autoremove -y
+#### 再安装
+* apt-get update
+* apt-get install im-config -y 
+* apt-get install libapt-pkg-perl -y 
+* apt-get install fcitx -y 
+* apt-get install fcitx-table-wbpy -y 
+* apt-get install fcitx-ui-classic -y 
+* apt-get install fcitx-pinyin -y 
+* apt-get install fcitx-googlepinyin -y 
+* apt-get install fcitx-frontend-gtk2 -y 
+* apt-get install fcitx-sunpinyin -y 
+* apt-get install fcitx-frontend-gtk3 -y 
+* apt-get install fcitx-frontend-qt4 -y 
+* apt-get install fcitx-table* -y 
+* apt-get install fcitx-m17n -y 
+* im-config -s fcitx  
+* fcitx restart  
+* 鼠标右键修改Input Method 为fcitx
+* vnc窗口内 ctrl+5 重载配置
+* vnc窗口内 ctrl+alt+b 开启/关闭虚拟键盘
+* 然后也不知道会不会成功。。！不行多装几次
+* https://blog.csdn.net/a145127/article/details/82903749
+* Linux安装fcitx输入法（命令安装）
+
+
+## 提示2-可能冻结QQ号的操作
+* 异地登录后立刻修改昵称头像（可以先修改再异地登录）
+* 新注册的号在机房ip登录（ip真人鉴别有很多，比如这个）
+* 机器人大量地发长消息（尤其是抽卡，条件允许可以改用图片抽卡）
+* 机器人24小时不停发消息（如果真的有需求可以让两个账号轮班）
+* 账号在短时间内加了大量的群（可以慢慢加，最好不超过10个群）
+* 大量高危账号在同一个ip登录（可以慢慢加，一台服务器最好不超过5个账号）
+
+
+### 更新
+* sudo apt update
+* sudo apt-get upgrade -y
+
+### python
+- 安装方法可以看Dockerfile
+* python2 -m pip install --upgrade pip
+* python3 -m pip install --upgrade pip
+* python3 -m pip install numpy     # 使用了python3的pip下载了numpy模块
+//python2 -m pip install numpy     # 使用Python2的pip下载了numpy
+#### python版本
+* python --version 
+* python3 --version
+* python2 -m pip --version 
+* sudo pip3 --version
+
+### nodejs
+- 安装方法可以看Dockerfile
+* sudo npm install -g n
+* sudo n lts //长期支持
+* sudo n stable //稳定版
+* sudo n latest //最新版
+* sudo n 8.4.0 //直接指定版本下载
+* sudo npm i -g npm
+#### 查看node版本
+* node -v
+* npm -v/npx -v
+
+### 看浏览器的版本
+- 安装方法可以看Dockerfile
+* phantomjs --version
+* firefox --version
+
+### 测网速 
+* pip install speedtest-cli
+* speedtest //测网速
+
+### 限制全局网速
+* git clone  https://github.com/magnific0/wondershaper.git //下载
+* cd wondershaper //跳转
+* sudo make install //安装
+* sudo nano /etc/conf.d/wondershaper.conf //编辑配置文件 ctrl+字母选择功能
+* sudo wondershaper -c -a eth0 //解除限速，网卡
+* sudo wondershaper -a eth0 -d 12440 -u 12440 //设置限速 网卡，下载，上传
+### 限制某个程序的网速
+* https://blog.csdn.net/jb19900111/article/details/17756195
+* sudo apt-get update
+* sudo apt-get install trickle -y
+* trickle -v
+* trickle  -s -d 1450 -u 1450 XXXX程序名
+* /usr/bin/trickle -s -d 1450 -u 1450 XXXX程序名
+
+### 包清理
+* apt-get autoremove -y
+* apt-get clean
+
+## 特殊
+### 启动linux任务管理器
+* top //可以按1，显示更多
+
+### Linux流量监控工具
+* apt-get install iftop //安装
+
+#### iftop界面相关说明
+- 界面上面显示的是类似刻度尺的刻度范围，为显示流量图形的长条作标尺用的。
+- 中间的<= =>这两个左右箭头，表示的是流量的方向。
+- TX：发送流量
+- RX：接收流量
+- TOTAL：总流量
+- Cumm：运行iftop到目前时间的总流量
+- peak：流量峰值
+- rates：分别表示过去 2s 10s 40s 的平均流量
+
+#### 相关参数
+- -i 设定监测的网卡，如：# iftop -i eth1
+- -B 以bytes为单位显示流量(默认是bits)，如：# iftop -B
+- -n 使host信息默认直接都显示IP，如：# iftop -n
+- -N 使端口信息默认直接都显示端口号，如: # iftop -N
+- -F 显示特定网段的进出流量，如# iftop -F 10.10.1.0/24或# iftop -F 10.10.1.0/255.255.255.0
+- -h（display this message），帮助，显示参数信息
+- -p 使用这个参数后，中间的列表显示的本地主机信息，出现了本机以外的IP信息;
+- -b 使流量图形条默认就显示;
+- -f 这个暂时还不太会用，过滤计算包用的;
+- -P 使host信息及端口信息默认就都显示;
+- -m 设置界面最上边的刻度的最大值，刻度分五个大段显示，例：# iftop -m 100M
+
+- Linux流量监控工具 - iftop (最全面的iftop教程) - VPS侦探
+- https://www.vpser.net/manage/iftop.html
+
+#### 其它
+Ubuntu下查看实时网络流量的几种方法_运维_李谦的博客-CSDN博客
+https://blog.csdn.net/weixin_39198406/article/details/79267687
+
+#### Permission denied
+- 权限不足，可以通过对其进行授权的方式解决：
+* sudo chmod -R 777 usr
+- R 是指级联应用到目录里的所有子目录和文件
+- 777 是所有用户都拥有最高权限
+
+### 防火墙
+- ubuntu 默认防火墙安装、启用、查看状态 - VincentZhu - 博客园
+- https://www.cnblogs.com/OnlyDreams/p/7210914.html
+
+
+解决 /bin/bash^M: bad interpreter: No such file or directory 问题
+apt-get install dos2unix
+dos2unix create_user_and_fix_permissions.sh
+https://www.itbulu.com/dos2unix.html
+
+待补充。。。
